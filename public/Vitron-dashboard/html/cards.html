@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styles/bootstrap.css">
+    <link rel="stylesheet" href="../fonts/bootstrap-icons.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <meta id="theme-check" name="theme-color" content="#FFFFFF">
+
+
+    <title>cards | Vitron-Trade </title>
+
+    <style>
+        .color-highlight {
+            color: #F6BB42 !important;
+        }
+
+        .bg-highlight {
+            background-color: #F6BB42 !important;
+            color: #FFF !important;
+        }
+
+        .border-highlight {
+            border-color: #F6BB42 !important;
+        }
+
+        .gradient-highlight {
+            background-image: linear-gradient(to bottom, #FFCE54, #F6BB42) !important;
+        }
+
+        .splide__pagination__page.is-active {
+            background-color: #F6BB42 !important;
+        }
+
+        .footer-bar-1 .active-nav i,
+        .footer-bar-1 .active-nav span {
+            color: #F6BB42 !important;
+        }
+
+        .footer-bar-2 .active-nav {
+            border-bottom: solid 3px #F6BB42;
+        }
+
+        .footer-bar-3 .active-nav {
+            border-top: solid 3px #F6BB42;
+        }
+
+        .footer-bar-4 .active-nav {
+            background-color: #F6BB42;
+        }
+
+        #footer-bar .circle-nav-1::after,
+        #footer-bar .circle-nav-2::before,
+        #footer-bar .circle-nav-2::after {
+            background-image: linear-gradient(to bottom, #FFCE54, #F6BB42) !important;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            background-color: #F6BB42;
+        }
+
+        .color-highlight {
+            color: #F6BB42;
+        }
+
+        .bg-highlight {
+            background-color: #F6BB42;
+            color: #FFF !important;
+        }
+
+        #header-deco-1,
+        #header-deco-2,
+        #header-deco-3,
+        #header-deco-4 {
+            fill: #F6BB42;
+        }
+
+        .error {
+            color: #d84558 !important;
+            background-color: rgba(218, 68, 83, .2) !important;
+            color: #fff !important;
+            position: relative;
+            padding: 1rem 1rem;
+            padding-right: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            transition: opacity .15s linear;
+        }
+             /* Hologram effect */
+        .card.bg-5 .card-bottom::before {
+            content: '';
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+          .card.bg-5 .card-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+    </style>
+
+
+</head>
+
+
+<body class="theme-light">
+
+    <div id="preloader">
+        <div class="spinner-border color-highlight" role="status"></div>
+    </div>
+
+    <!-- Page Wrapper-->
+    <div id="page">
+
+        <!-- Footer Bar -->
+        <div id="footer-bar" class="footer-bar-1 footer-bar-detached">
+            <a href="./earn.html"><i class="bi bi-piggy-bank"></i><span>Earn</span></a>
+            <a href="./account-history.html"><i class="bi bi-calendar4-event"></i><span>Activity</span></a>
+            <a href="../Dashboard.html" class="circle-nav-2"><i class="bi bi-house-fill"></i><span>Wallet</span></a>
+            <a href="./explore.html"><i class="bi bi-grid"></i><span>Explore</span></a>
+            <a href="./profile-settings.html" data-bs-toggle="offcanvas" data-bs-target="#menu-sidebar"><i
+                    class="bi bi-gear"></i><span>Settings</span></a>
+        </div>
+
+        <!-- Page Content - Only Page Elements Here-->
+        <div class="page-content footer-clear">
+
+
+
+            <style>
+                .tabs-pill a[aria-expanded="true"] {
+                    background-color: #FFCE54;
+                    border-color: #F6BB42;
+                    color: #FFF !important;
+                }
+            </style>
+
+            <!-- Page Title-->
+            <div class="pt-3">
+                <div class="page-title d-flex">
+                    <div class="align-self-center">
+                        <a href="../Dashboard.html" data-back-button
+                            class="me-3 ms-0 icon icon-xxs bg-theme rounded-s shadow-m">
+                            <i class="bi bi-chevron-left color-theme font-14"></i>
+                        </a>
+                    </div>
+                    <div class="align-self-center me-auto">
+                        <h1 class="color-theme mb-0 font-18">My cards</h1>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Main card begin -->
+
+            <div class="card card-style bg-5 shadow-card shadow-card-l" style="height:200px">
+
+                <div class="card-center">
+                    <div class="bg-theme px-3 py-2 rounded-end d-inline-block">
+                        <h1 class="font-13 my-n1">
+                            <a class="color-theme collapsed" data-bs-toggle="collapse" href="#balance3"
+                                aria-controls="balance2" aria-expanded="false">View Balance</a>
+                        </h1>
+                        <div class="collapse" id="balance3" style="">
+                            <h2 class="color-theme font-26">$0.00</h2>
+                        </div>
+                    </div>
+                </div>
+                <strong class="card-top no-click font-12 p-3 color-white font-monospace">Main Account</strong>
+                <strong class="card-bottom no-click p-3 text-start color-white font-monospace">*** **** ****
+                    7341</strong>
+                <strong class="card-bottom no-click p-3 text-end color-white font-monospace">10 / 2030</strong>
+                <div class="card-overlay bg-black opacity-50"></div>
+            </div>
+
+            <!-- Main card end -->
+
+
+
+            <!-- Tab begin-->
+            <div class="card card-style">
+                <br>
+                <div class="list-group list-custom list-group-m list-group-flush rounded-xs px-4">
+                    <select class="form-select rounded-xs" id="c6" aria-label="Floating label select example">
+                        <option selected="">Card type</option>
+                        <option value="1">Visa card</option>
+                        <option value="2">Master card</option>
+                        <option value="3">Vitron-Trade Card</option>
+                    </select>
+                </div>
+
+                <div class="content mb-2">
+
+                    <div class="tabs tabs-pill" id="tab-group-2">
+
+                        <div class="tab-controls rounded-m p-1">
+                            <a class="font-13 rounded-m" data-bs-toggle="collapse" href="#tab-4"
+                                aria-expanded="true">Settings</a>
+                            <a class="font-13 rounded-m collapsed" data-bs-toggle="collapse" href="#tab-5"
+                                aria-expanded="false">Request card</a>
+                        </div>
+
+                        <div class="mt-3"></div>
+                        <div class="collapse show" id="tab-4" data-bs-parent="#tab-group-2" style="">
+
+                            <div class="list-group list-custom list-group-m list-group-flush rounded-xs px-1">
+
+                                <a href="#" class="list-group-item pe-2" data-trigger-switch="switch-5">
+                                    <i
+                                        class="has-bg gradient-yellow color-white shadow-bg shadow-bg-xs rounded-xs bi bi-gear-fill"></i>
+                                    <div><strong> Use Online Payments</strong><span>Use this card to pay online</span>
+                                    </div>
+                                    <div class="form-switch ios-switch switch-green switch-s">
+                                        <input type="checkbox" class="ios-input" id="switch-5">
+                                        <label class="custom-control-label" for="switch-5"></label>
+                                    </div>
+                                </a>
+                                <a href="#" class="list-group-item pe-2" data-trigger-switch="switch-51">
+                                    <i
+                                        class="has-bg gradient-yellow color-white shadow-bg shadow-bg-xs rounded-xs bi bi-wifi"></i>
+                                    <div><strong> Use NFC Payments</strong><span>Pay With Card Contactless</span></div>
+                                    <div class="form-switch ios-switch switch-green switch-s">
+                                        <input type="checkbox" class="ios-input" id="switch-51" checked>
+                                        <label class="custom-control-label" for="switch-51"></label>
+                                    </div>
+                                </a>
+
+                                <a href="#tab-5" class="list-group-item pe-2" data-bs-toggle="collapse"
+                                    data-bs-target="">
+                                    <i
+                                        class="has-bg gradient-blue color-white shadow-bg shadow-bg-xs rounded-xs bi bi-check-circle"></i>
+                                    <div><strong>Activate this Card</strong></div>
+                                    <i class="bi bi-chevron-right"></i>
+
+                                    <a href="#" class="list-group-item pe-2" data-bs-toggle="offcanvas"
+                                        data-bs-target="#nocard">
+                                        <i
+                                            class="has-bg gradient-red color-white shadow-bg shadow-bg-xs rounded-xs bi bi-x-circle"></i>
+                                        <div><strong>Remove this Card</strong></div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+
+                                    <a href="./support.html" class="list-group-item pe-2"
+                                        data-trigger-switch="switch-3">
+                                        <i
+                                            class="has-bg gradient-yellow color-white shadow-bg shadow-bg-xs rounded-xs bi bi-question-circle"></i>
+                                        <div class="d-flex text-center"><strong>Report Lost or Stolen</strong></div>
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+
+                            </div>
+                        </div>
+
+                        <!-- tab 2 -->
+
+                        <div class="collapse" id="tab-5" data-bs-parent="#tab-group-2" style="">
+
+                            <div class="list-group list-custom list-group-m list-group-flush rounded-xs">
+
+                                <a href="#" class="list-group-item">
+                                    <i class="bi bi-piggy-bank"></i>
+                                    <div><strong>Active Earning Plan</strong><span>You must have several deposits</span>
+                                    </div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="bi bi-patch-check"></i>
+                                    <div><strong>KYC Verification</strong><span>Your ID must be approved</span></div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+
+                                <a href="#" class="list-group-item">
+                                    <i class="bi bi-bank"></i>
+                                    <div><strong>Optional</strong><span>Bank account holder;</span></div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
+
+                            <a class="btn btn-l scale-box px-5 gradient-yellow shadow-bg shadow-bg-s" href="#"
+                                data-bs-toggle="offcanvas" data-bs-target="#addcard">Activate card</a> <br> <br>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Tab end -->
+
+
+
+        </div>
+
+    </div>
+    <!-- End of Page ID-->
+
+    <!-- Dialogue box -->
+
+    <div id="nocard" style="width: 320px; display: block; visibility: visible;"
+        class="offcanvas offcanvas-modal offcanvas-detached rounded-m" aria-modal="true" role="dialog">
+        <div class="content text-center">
+            <i style="font-size:65px;"
+                class="scale-box bi bi-question-circle-fill color-yellow-dark shadow-s rounded-circle p-0 mt-3 mb-3 d-inline-block"></i>
+            <h1 class="pt-3 font-28">Inactive card</h1>
+            <p class="font-14">
+                You cannot remove this card as it has not yet been activated. You can activate it, request a new one, or
+                chat with support for assistance
+            </p>
+            <a href="#" data-bs-toggle="offcanvas" class="btn btn-full gradient-yellow shadow-bg shadow-bg-xs">Done</a>
+        </div>
+    </div>
+
+    <!-- -->
+
+    <div id="addcard" style="height: 410px; display: block; visibility: visible;"
+        class="offcanvas offcanvas-bottom rounded-m offcanvas-detached" aria-modal="true" role="dialog">
+        <div class="d-flex m-3">
+            <div class="align-self-center">
+                <h2 class="font-700 mb-0">You are not Eligble</h2>
+            </div>
+            <div class="align-self-center ms-auto">
+                <a href="#" class="icon icon-xs me-n2" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-x-circle-fill color-red-dark font-16"></i>
+                </a>
+            </div>
+        </div>
+        <div class="content mt-0">
+            <div class="card card-style rounded-s m-0 bg-3"
+                style="height:130px; display: block; visibility: visible; background-image: url('https://e0.pxfuel.com/wallpapers/776/366/desktop-wallpaper-mastercard-credit-card.jpg'); background-size: cover;">
+            </div><br>
+            <p class="mb-4">
+                Your profile does not meet the listed creteria yet. Please ensure you meet the requirements before
+                requesting for a debit card. Have futher question? Contact us via <a href="/?a=support">live chat</a>
+                now. We look forward to hearing from
+                you and working together.
+            </p>
+            <a href="#" data-bs-dismiss="offcanvas"
+                class="btn btn-full gradient-highlight shadow-bg shadow-bg-xs">Done!</a>
+        </div>
+    </div>
+
+    <!-- Dialogue box -->
+
+
+
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/custom.js"></script>
+</body>
+
+</html>

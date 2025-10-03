@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/global.css">
+
+    <title>Admin Dashboard | Deposit</title>
+</head>
+    <style>
+
+        .btn-edit {
+            background: #F6BB42;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #e8ae39;
+        }
+
+        /* Action buttons container */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+
+        /* Modal Styles */
+        .modal-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            padding: 20px;
+        }
+
+        .modal-wrapper.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            padding: 0;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .modal-wrapper.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .balance-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-control {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+        }
+
+        .transaction-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #444;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 250px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-chart-line"></i> Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item" data-page="dashboard">
+                        <a href="./adminDash.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item" data-page="users">
+                        <a href="./users.html"><i class="fas fa-users"></i> Users</a>
+                    </li>
+                    <li class="nav-item active" data-page="deposits">
+                        <a href="./deposits.html"><i class="fas fa-money-bill-wave"></i> Deposits</a>
+                    </li>
+                    <li class="nav-item" data-page="withdrawals">
+                        <a href="./withdrawal.html"><i class="fas fa-wallet"></i> Withdrawals</a>
+                    </li>
+                    <li class="nav-item" data-page="investments">
+                        <a href="./plans.html"><i class="fas fa-chart-pie"></i> Investment Plans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./investment.html"><i class="fas fa-chart-pie"></i> Investments</a>
+                    </li>
+                    <li class="nav-item" data-page="settings">
+                        <a href="./settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Deposits Management Page -->
+            <div id="deposits">
+                <header class="content-header">
+                    <div class="header-left">
+                        <h1>Deposit Management</h1>
+                        <p>Review and manage user deposits</p>
+                    </div>
+                </header>
+                
+                <div class="nav-tabs">
+                    <button class="nav-link active" data-tab="pending-deposits">Pending <span class="badge badge-pending">5</span></button>
+                    <button class="nav-link" data-tab="approved-deposits">Approved <span class="badge badge-approved">42</span></button>
+                </div>
+                
+                <div id="pending-deposits" class="tab-content active">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="approved-deposits" class="tab-content">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          
+        </main>
+    </div>
+
+    <!-- Edit Deposit Modal -->
+    <div id="editDepositModal" class="modal-wrapper">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adjust Deposit Balance</h2>
+                <button class="modal-close" id="closeEditModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="transaction-info">
+                    <div class="info-item">
+                        <span class="info-label">Transaction ID:</span>
+                        <span class="info-value" id="modalTransactionId"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">User:</span>
+                        <span class="info-value" id="modalUser"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Current Amount:</span>
+                        <span class="info-value" id="modalAmount"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Payment Method:</span>
+                        <span class="info-value" id="modalMethod"></span>
+                    </div>
+                </div>
+                
+                <form class="balance-form">
+                    <div class="form-row">
+                        <input type="number" id="amt" name="addBalance" min="1" placeholder="Amount to Add" class="form-control" required>
+                        <input type="text" id="mtd" name=""  placeholder="payment method" class="form-control" required>
+                        <button class="btn btn-success" type="submit" id="addBtn">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </form>
+
+                <form action="" method="post" class="balance-form">
+                    <div class="form-row">
+                        <input type="number" name="subtractBalance" min="1" placeholder="Amount to Subtract" class="form-control" required>
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fas fa-minus"></i> Subtract
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="../js/adminAuthCheck.js"></script>
+<!-- <script src="../js/eke.js"></script> -->
+<script src="../js/deposit.js"></script>
+</body>
+</html>

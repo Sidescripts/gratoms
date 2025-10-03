@@ -1,0 +1,217 @@
+/* modal.css - Global Modal Styles */
+.modal-overlay-m {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none; /* Default hidden state */
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-overlay-m.active {
+    display: flex; /* Show when active */
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+}
+
+
+/* .modal {
+    background: linear-gradient(135deg, #24243a 0%, #2c2c4c 100%);
+    width: 100%;
+    max-width: 320px;
+    height: 300px !important;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.modal-overlay-m.active .modal {
+    opacity: 1;
+    transform: translateY(0);
+} */
+
+.modal {
+    background: linear-gradient(135deg, #24243a 0%, #2c2c4c 100%);
+    width: 100%;
+    max-width: 320px;
+    height: 300px !important;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    /* Initial state: Centered but shifted down 20px for slide-up effect */
+    transform: translate(-50%, -50%) translateY(20px) !important;
+}
+
+.modal-overlay-m.active .modal {
+    /* Final state: Fully centered and visible */
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) !important;
+}
+
+/* Rest of your CSS remains unchanged */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-overlay-m {
+        padding: 16px;
+    }
+    
+    .modal {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-overlay-m {
+        padding: 12px;
+    }
+    
+    .modal-header {
+        padding: 16px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-actions {
+        padding: 12px 20px 20px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .modal-btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.modal-header {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header.error {
+    border-top: 4px solid #ff4757;
+}
+
+.modal-header.warning {
+    border-top: 4px solid #ffa502;
+}
+
+.modal-header.success {
+    border-top: 4px solid #2ed573;
+}
+
+.modal-header.info {
+    border-top: 4px solid #2d98da;
+}
+
+.modal-icon {
+    margin-right: 15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.error .modal-icon {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+}
+
+.warning .modal-icon {
+    background: rgba(255, 165, 2, 0.2);
+    color: #ffa502;
+}
+
+.success .modal-icon {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.info .modal-icon {
+    background: rgba(45, 152, 218, 0.2);
+    color: #2d98da;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.modal-body {
+    padding: 25px;
+    line-height: 1.6;
+}
+
+.modal-message {
+    margin-bottom: 20px;
+    color: #d0d0d0;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 25px 25px;
+    gap: 10px;
+}
+
+.modal-btn {
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-btn-primary {
+    background: #7e5bef;
+    color: white;
+}
+
+.modal-btn-primary:hover {
+    background: #8d6eff;
+}
+
+.modal-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+}
+
+.modal-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
