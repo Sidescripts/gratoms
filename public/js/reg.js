@@ -2,7 +2,7 @@
         const API_BASE_URL = 'https://api.coingecko.com/api/v3';
         const CRYPTO_IDS = ['bitcoin', 'ethereum', 'binancecoin', 'ripple', 'cardano', 'solana', 'polkadot'];
         const CURRENCY = 'usd';
-        
+      
         // DOM elements
         const amountInput = document.getElementById('amount');
         const cryptoSelect = document.getElementById('crypto');

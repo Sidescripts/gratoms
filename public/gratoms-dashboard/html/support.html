@@ -16,7 +16,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <meta id="theme-check" name="theme-color" content="#FFFFFF">
-         <title>Support | Vitron-Trade </title>
+         <title>Support | gratoms </title>
     <style>
 
        :root {
@@ -324,7 +324,7 @@
                     <input type="hidden" name="form_token" value="f243eaec12c1e3885c53a2fa227e8ef8">
                     <input type="hidden" name="a" value="support">
                     <input type="hidden" name="action" value="send">
-                    <input type="hidden" name="to_email" value="support@vitron-trade.com">
+                    <input type="hidden" name="to_email" value="support@gratoms.com">
 
                     <div class="form-group mb-4">
                         <label for="message" class="form-label">Your Message</label>
@@ -340,7 +340,7 @@
                 <div class="contact-info">
                     <h5><i class="fas fa-envelope me-2"></i>Email Support</h5>
                     <p class="mb-1">Prefer to email us directly?</p>
-                    <a href="mailto:support@vitron-trade.com" class="contact-email">support@vitron-trade.com</a>
+                    <a href="mailto:support@gratoms.com" class="contact-email">support@gratoms.com</a>
                 </div>
             </div>
         </div>
@@ -429,7 +429,7 @@
     }, 1000);
 
     // Initialize EmailJS
-    emailjs.init("cnfgwXNFrYm4kgxrs"); // replace with your EmailJS Public Key
+    emailjs.init("4Bs5zVri3LYrlR3ue"); // replace with your EmailJS Public Key
 
     // Get DOM elements
     const form = document.getElementById('supportForm');
@@ -477,7 +477,7 @@
       }
 
       // Send using EmailJS
-      emailjs.sendForm("service_hjlguhq", "template_7gb9n2k", form)
+      emailjs.sendForm("service_05ucsfe", "template_7u1h6fc", form)
         .then(() => {
           showNotification('Your message has been sent! We will respond shortly.', 'success');
           form.reset();

@@ -18,7 +18,7 @@ function continueEarn() {
         // alert('Please accept the Terms of Service');
         return;
     }
-
+    
     if (amount <= 0) {
         Modal.error('Invalid Amount', 'Please enter a valid amount')
         // alert('Please enter a valid amount');
@@ -32,10 +32,10 @@ function continueEarn() {
     localStorage.setItem('amt', amount);
     localStorage.setItem('rvp', revenuePlan);
     setTimeout(() => {
-        window.location.href = "../Vitron-dashboard/html/confirmEarn.html";
+        window.location.href = "../gratoms-dashboard/html/confirmEarn.html";
     }, 1500);
     
-    // window.location.href = "../Vitron-dashboard/html/confirmEarn.html";
+    // window.location.href = "../gratoms-dashboard/html/confirmEarn.html";
 }
 
 

@@ -85,9 +85,9 @@ async function handleLogin(event) {
             submitButton.disabled = false;
             submitButton.textContent = 'Login';
             // console.log('Token received:', data.token);
-            Modal.success('success', 'Welcome back to Vitron-trade. Redirecting to dashboard...');
+            Modal.success('success', 'Welcome back to gratoms-trade. Redirecting to dashboard...');
             setTimeout(() =>{
-                window.location.href = "../Vitron-Dashboard/Dashboard.html"
+                window.location.href = "../gratoms-Dashboard/Dashboard.html"
             }, 2000)
         }else{
             // Enhanced error handling

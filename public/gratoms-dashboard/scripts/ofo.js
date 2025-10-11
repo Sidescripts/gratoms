@@ -216,7 +216,7 @@ function continueEarn() {
     
     // Redirect to confirmation page
     setTimeout(() => {
-        window.location.href = "../Vitron-dashboard/html/confirmEarn.html";
+        window.location.href = "../gratoms-dashboard/html/confirmEarn.html";
     }, 1500);
 }
 

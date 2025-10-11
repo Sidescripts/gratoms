@@ -78,7 +78,7 @@
                 if (!response.ok) throw new Error('Failed to update user details');
                 Modal.success("Success", "User profile updated successfully.");
                   setTimeout(() => {
-                    window.location.href="../Vitron-dashboard/html/profile-settings.html"
+                    window.location.href="../gratoms-dashboard/html/profile-settings.html"
                   }, 2000);
             } catch (error) {
                 Modal.error("Network error2", error.message);
