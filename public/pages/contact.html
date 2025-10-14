@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Vitron-dashboard/styles/bootstrap.css">
-    <link rel="stylesheet" href="../Vitron-dashboard/fonts/bootstrap-icons.css">
-    <link rel="stylesheet" href="../Vitron-dashboard/fonts/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../gratoms-dashboard/styles/bootstrap.css">
+    <link rel="stylesheet" href="../gratoms-dashboard/fonts/bootstrap-icons.css">
+    <link rel="stylesheet" href="../gratoms-dashboard/fonts/bootstrap-icons.css" />
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="../css/contact.css">
@@ -18,17 +18,16 @@
     .contact-container {
       width: 100%;
       max-width: 500px;
-      background: rgba(26, 26, 46, 0.9);
+      background: linear-gradient(45deg, #1a1a1a 0%, #000000 100%);
       border-radius: 15px;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
       overflow: hidden;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 206, 84, 0.1);
       margin: 20px auto;
     }
 
     .header {
-      background: linear-gradient(to right, #FFCE54, #F6BB42);
+      background: linear-gradient(135deg, #fcb900 0%, #ff8c00 100%);
       padding: 30px 20px;
       text-align: center;
       color: #1a1a2e;
@@ -102,7 +101,7 @@
     }
 
     .input-group input:focus, .input-group textarea:focus {
-      border-color: #FFCE54;
+      border-color: #e6a800;
       outline: none;
       box-shadow: 0 0 0 3px rgba(255, 206, 84, 0.2);
     }
@@ -111,12 +110,12 @@
     .input-group input:not(:placeholder-shown)+label,
     .input-group textarea:focus+label,
     .input-group textarea:not(:placeholder-shown)+label {
-      top: -10px;
+      top: -20px;
       left: 10px;
       font-size: 12px;
-      background: #1a1a2e;
+      background: transparent;
       padding: 0 8px;
-      color: #FFCE54;
+      color: #e6a800;
     }
 
     .input-group svg {
@@ -132,13 +131,13 @@
 
     .input-group input:focus~svg,
     .input-group textarea:focus~svg {
-      color: #FFCE54;
+      color: #e6a800;
     }
 
     button {
       width: 100%;
       padding: 15px;
-      background: linear-gradient(to right, #FFCE54, #F6BB42);
+    background: linear-gradient(135deg, #fcb900 0%, #ff8c00 100%);
       border: none;
       border-radius: 8px;
       color: #1a1a2e;
@@ -176,7 +175,7 @@
     .contact-method svg {
       width: 20px;
       height: 20px;
-      color: #FFCE54;
+      color: #e6a800;
     }
 
     .footer {
@@ -187,7 +186,7 @@
     }
 
     .footer a {
-      color: #FFCE54;
+      color: #e6a800;
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
@@ -205,7 +204,7 @@
       }
 
       .form-container {
-        padding: 20px;
+        padding: 40px 20px;
       }
 
       .input-group input, .input-group textarea {
@@ -233,9 +232,9 @@
         <div class="container header-container">
             <div class="logo-container">
                 <div class="logo">
-                    <img src="../assests/images/logo.png" alt="Logo" />
+                    <img src="../assests/images/gratomslogo1.png" alt="Logo" />
                 </div>
-                <a href="#" class="logo-text">VITRON</a>
+                <a href="#" class="logo-text">Gratoms</a>
             </div>
 
             <nav>
@@ -243,7 +242,7 @@
                <li><a href="/index.html">Home</a></li>
                 <li><a href="../pages/about.html">About</a></li>
                 <li><a href="../pages/contact.html" class="active">Contact Us</a></li>
-                <li><a href="#faq">Faq</a></li>
+                <li><a href="../pages/faq.html">Faq</a></li>
 
                 </ul>
             </nav>
@@ -286,7 +285,7 @@
                 </div>
                 
                 <div class="main-phone-image">
-                    <img src="../assests/images/vitronphone-bg.png" alt="Mobile App">
+                    <img src="../assests/images/gratomsphone-bg.png" alt="Mobile App">
                 </div>
                 
                 <div class="flanking-image right-side">
@@ -296,7 +295,7 @@
 
             <div class="full-width-container">
                 <h3 class="heading">Send us a message</h3>
-                <p class="description">With Vitron, you can securely store all your payment cards. Say goodbye to bulky wallets and hello to a sleek, organized digital solution that fits right in your pocket.</p>
+                <p class="description">With gratoms, you can securely store all your payment cards. Say goodbye to bulky wallets and hello to a sleek, organized digital solution that fits right in your pocket.</p>
          
                 
                 <div class="icon-list">
@@ -326,47 +325,47 @@
                     Please fill all required fields correctly.
                 </div>
                 
-                <form id="contactForm">
-                    <div class="input-group">
-                        <input type="text" id="name" placeholder=" " required>
-                        <label for="name">Full Name</label>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" class="svg-inline--fa fa-user fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                            <path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
-                        </svg>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="email" id="email" placeholder=" " required>
-                        <label for="email">Email Address</label>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
-                        </svg>
-                    </div>
-                    
-                    <div class="input-group">
-                        <textarea id="message" placeholder=" " required></textarea>
-                        <label for="message">Your Message</label>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="comment" class="svg-inline--fa fa-comment fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"></path>
-                        </svg>
-                    </div>
-                    
-                    <button type="submit">Send Message</button>
-                </form>
+<form id="contactForm" action="https://formspree.io/f/xyznnpqo" method="POST">
+    <div class="input-group">
+        <input type="text" id="name" name="name" placeholder=" " required>  <!-- Added name="name" -->
+        <label for="name">Full Name</label>
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" class="svg-inline--fa fa-user fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
+        </svg>
+    </div>
+    
+    <div class="input-group">
+        <input type="email" id="email" name="email" placeholder=" " required>  <!-- Already has name="email" -->
+        <label for="email">Email Address</label>
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+        </svg>
+    </div>
+    
+    <div class="input-group">
+        <textarea id="message" name="message" placeholder=" " required></textarea>  <!-- Added name="message" -->
+        <label for="message">Your Message</label>
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="comment" class="svg-inline--fa fa-comment fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"></path>
+        </svg>
+    </div>
+    
+    <button type="submit">Send Message</button>
+</form>
                 
                 <div class="contact-info">
                     <div class="contact-method">
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="phone" class="svg-inline--fa fa-phone fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path>
                         </svg>
-                        <span>+1 (555) 123-4567</span>
+                        <span>+1 (555) 253-7567</span>
                     </div>
                     
                     <div class="contact-method">
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
                         </svg>
-                        <span>support@Vitron-trade.com</span>
+                        <span>support@gratoms.com</span>
                     </div>
                 </div>
                 
@@ -375,45 +374,71 @@
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const message = document.getElementById('message').value.trim();
-            
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-            
-            // Reset messages
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-            
-            // Simple validation
-            if (name === '' || email === '' || message === '') {
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // Email validation
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                errorMessage.textContent = 'Please enter a valid email address.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-            
-            // If validation passes, show success message
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    
+    // Reset messages
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+    
+    // Validation
+    if (name === '' || email === '' || message === '') {
+        errorMessage.textContent = 'Please fill all required fields correctly.';
+        errorMessage.style.display = 'block';
+        return;
+    }
+    
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        errorMessage.textContent = 'Please enter a valid email address.';
+        errorMessage.style.display = 'block';
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    
+    // Submit to Formspree
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
             successMessage.style.display = 'block';
-            
-            // In a real application, you would send the form data to a server here
-            
-            // Reset form
             this.reset();
-        });
+        } else {
+            errorMessage.textContent = 'Failed to send message. Please try again.';
+            errorMessage.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        errorMessage.textContent = 'Network error. Please check your connection.';
+        errorMessage.style.display = 'block';
+    })
+    .finally(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    });
+});
     </script>
     
-    <script src="../Vitron-dashboard/scripts/bootstrap.min.js"></script>
+    <script src="../gratoms-dashboard/scripts/bootstrap.min.js"></script>
     <script src="../js/home.js"></script>
 </body>
-</html>
+</html> 

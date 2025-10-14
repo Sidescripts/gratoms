@@ -81,7 +81,7 @@ function redirectToConfirmation(formData) {
     localStorage.setItem('pendingWithdrawal', JSON.stringify(withdrawalData));
     
     // Redirect to confirmation page
-    window.location.href = "../Vitron-dashboard/html/confirmWithdrawal.html";
+    window.location.href = "../gratoms-dashboard/html/confirmWithdrawal.html";
 }
 
 // Submit withdrawal to server (to be called from confirmation page)

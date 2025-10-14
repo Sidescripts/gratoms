@@ -16,7 +16,7 @@ function continueDeposit() {
     localStorage.setItem('depositPMethod', paymentMethod);
     localStorage.setItem('depositAmount', amount);
     setTimeout(() => {
-      window.location.href = '../Vitron-dashboard/html/confirmDeposit.html';
+      window.location.href = '../gratoms-dashboard/html/confirmDeposit.html';
     }, 1500);
   }
 }
@@ -180,7 +180,7 @@ function openPaymentModal() {
   modalElement.addEventListener(
     'hidden.bs.modal',
     () => {
-      window.location.href = '../Vitron-Dashboard/Dashboard.html';
+      window.location.href = '../gratoms-Dashboard/Dashboard.html';
     },
     { once: true }
   );

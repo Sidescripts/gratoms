@@ -12,7 +12,6 @@ function togglePassword(inputId) {
     }
 }
 
-
 // Form validation function
 function validateForm(formData) {
     const errors = [];
@@ -114,7 +113,7 @@ async function handleSignup(event) {
             localStorage.setItem('username', data.user.username);
             Modal.success('success', 'Account created successfully! Redirecting to dashboard...');
             setTimeout(() =>{
-                window.location.href = "../Vitron-Dashboard/Dashboard.html"
+                window.location.href = "../gratoms-Dashboard/Dashboard.html"
             }, 2000)
         }else{
             // Enhanced error handling

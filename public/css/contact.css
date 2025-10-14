@@ -14,10 +14,11 @@
   --accent: #00d2ff;
   --dark: #0f3460;
   --darker: #16213e;
-  --darkest: #1a1a2e;
+  --darkest: #000000;
   --light: #ffffff;
   --gray: #a0a0b0;
-  --dark-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+--dark-bg: #fff;
+
 }
 
 a {
@@ -98,7 +99,7 @@ h2 {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(26, 26, 46, 0.9);
+  background: black;
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -309,7 +310,7 @@ nav ul li a:hover::after {
   right: -320px;
   width: 320px;
   height: 100vh;
-  background: var(--darker);
+  background: #0C0B0B;
   backdrop-filter: blur(15px);
   z-index: 1001;
   display: flex;
@@ -465,7 +466,7 @@ nav ul li a:hover::after {
   }
 
   .header-container {
-    padding: 12px 15px;
+    padding: 0px 15px;
   }
 
   .mobile-menu {
@@ -590,7 +591,16 @@ nav ul li a:hover::after {
   align-items: center;
   text-align: start;
 }
-
+.full-width-container h3 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #000000 0%, #050505 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
 .heading {
   font-size: 2.5rem;
   font-weight: 700;
@@ -620,19 +630,19 @@ nav ul li a:hover::after {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  color: white;
+  color: #2b2b2b;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 .icon-list-item:hover {
-  color: #4299e1;
+  color: var(--primary);
 }
 
 .icon-list-icon {
   margin-right: 10px;
   font-size: 1.5rem;
-  color: #4299e1;
+  color: var(--primary);
 }
 
 /******************************** Animations *********************************************/

@@ -7,7 +7,14 @@
     }
 
     body {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+   background:
+  linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+  url("../assests/images/5.jpg") center center / cover no-repeat;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -19,7 +26,7 @@
     .auth-container {
       width: 100%;
       max-width: 450px;
-      background: rgba(26, 26, 46, 0.9);
+      background: white;
       border-radius: 15px;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
       overflow: hidden;
@@ -28,7 +35,7 @@
     }
 
     .header {
-      background: linear-gradient(to right, #FFCE54, #F6BB42);
+      /* background: linear-gradient(to right, #FFCE54, #F6BB42); */
       padding: 30px 20px;
       text-align: center;
       color: #1a1a2e;
@@ -89,11 +96,12 @@
     .input-group input {
       width: 100%;
       padding: 15px 15px 15px 50px;
-      border: 2px solid #2d2d4d;
+      border: none;
       border-radius: 8px;
       font-size: 16px;
       transition: all 0.3s ease;
-      background: rgba(45, 45, 77, 0.5);
+      /* background: rgba(45, 45, 77, 0.5); */
+      background: #E8F0FE;
       color: #fff;
     }
 
@@ -105,10 +113,10 @@
 
     .input-group input:focus+label,
     .input-group input:not(:placeholder-shown)+label {
-      top: -10px;
+      top: -20px;
       left: 10px;
       font-size: 12px;
-      background: #1a1a2e;
+      background: transparent;
       padding: 0 8px;
       color: #FFCE54;
     }
@@ -131,10 +139,10 @@
     button {
       width: 100%;
       padding: 15px;
-      background: linear-gradient(to right, #FFCE54, #F6BB42);
+      background: linear-gradient(135deg, #fcb900 0%, #ff8c00 100%);
       border: none;
       border-radius: 8px;
-      color: #1a1a2e;
+      color: white;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
@@ -233,7 +241,7 @@
     .back-to-login {
       display: inline-block;
       margin-top: 15px;
-      color: #FFCE54;
+      color: var(--primary-dark);
       text-decoration: none;
       font-size: 14px;
     }

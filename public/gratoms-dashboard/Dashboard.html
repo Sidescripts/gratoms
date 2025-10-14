@@ -1,0 +1,900 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="fonts/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+     <!-- #### -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../modal/modal.css">
+    <!-- #### -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <meta id="theme-check" name="theme-color" content="#FFFFFF">
+    <title>Dashboard | Gratoms </title>
+
+ 
+</head>
+
+<body class="theme-light">
+
+    <div id="preloader">
+        <div class="spinner-border color-highlight" role="status"></div>
+    </div>
+
+    <!-- Page Wrapper-->
+    <div id="page">
+
+        <!-- Footer Bar -->
+        <div id="footer-bar" class="footer-bar-1 footer-bar-detached">
+            <a href="../gratoms-dashboard/html/earn.html"><i class="bi bi-piggy-bank"></i><span>Earn</span></a>
+            <a href="../gratoms-dashboard/html/account-history.html"><i class="bi bi-calendar4-event"></i><span>Activity</span></a>
+            <a href="../gratoms-dashboard/Dashboard.html" class="circle-nav-2"><i class="bi bi-house-fill"></i><span>Wallet</span></a>
+            <a href="../gratoms-dashboard/html/explore.html"><i class="bi bi-grid"></i><span>Explore</span></a>
+              <a href="../gratoms-dashboard/html/profile-settings.html"><i class="bi bi-gear"></i><span>Settings</span></a>
+            <!-- <a href="../gratoms-dashboard/html/profile-settings.html" data-bs-toggle="offcanvas" data-bs-target="#menu-sidebar"><i class="bi bi-gear"></i><span>Settings</span></a> -->
+        </div>
+
+        <!-- Page Content - Only Page Elements Here-->
+        <div class="page-content footer-clear">
+
+
+            <!-- Page Title-->
+            <div class="pt-3">
+                <div class="page-title d-flex">
+                    <div class="align-self-center me-auto">
+                        <p class="color-highlight header-date"></p>
+                        <h1 style="font-size: 18px; margin-top: 5px;">Welcome <span id="username" style="color: #F6BB42;"></span></h1>
+                    </div>
+
+                    <div class="align-self-center ms-auto">
+                        <a href="#" data-bs-toggle="dropdown"
+                            class="icon icon-xxs gradient-highlight color-white shadow-bg shadow-bg-xs rounded-m">
+                            <i class="fa-solid fa-bars font-18" style="margin-top: 7px;"></i>
+                        </a>
+                        <!-- Page Title Dropdown Menu-->
+                        <div class="dropdown-menu">
+                            <div class="card card-style shadow-m mt-1 me-1">
+                                <div class="list-group list-custom list-group-s list-group-flush rounded-xs px-3 py-1">
+
+
+                                    <a href="../gratoms-dashboard/html/profile-settings.html" class="list-group-item">
+                                        <i
+                                            class="has-bg gradient-dark shadow-bg shadow-bg-xs rounded-xs color-gray-dark bi bi-person-circle"></i>
+                                        <strong class="font-13">Profile</strong>
+                                    </a>
+
+                                    <a href="../gratoms-dashboard/html/faq.html" class="list-group-item">
+                                        <i
+                                            class="has-bg gradient-dark shadow-bg shadow-bg-xs rounded-xs color-gray-dark bi bi-info-circle"></i>
+                                        <strong class="font-13">FAQs</strong>
+                                    </a>
+
+                                    <a href="../gratoms-dashboard/html/livechat.html" class="list-group-item">
+                                        <i
+                                            class="has-bg gradient-dark shadow-bg shadow-bg-xs rounded-xs color-gray-dark bi bi-chat-dots"></i>
+                                        <strong class="font-13">Chat</strong>
+                                    </a>
+
+                                    <a href="../gratoms-dashboard/html/support.html" class="list-group-item">
+                                        <i
+                                            class="has-bg gradient-dark shadow-bg shadow-bg-xs rounded-xs color-gray-dark bi bi-envelope"></i>
+                                        <strong class="font-13">Support</strong>
+                                    </a>
+
+                                    <a href="/index.html" class="list-group-item">
+                                        <i
+                                            class="has-bg gradient-dark shadow-bg shadow-bg-xs rounded-xs color-gray-dark bi bi-power "></i>
+                                        <strong class="font-13">Log Out</strong>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Alert pop up -->
+
+        <!-- Notification System -->
+        <div id="alertWrapper">
+            <div class="cyber-notification">
+                <div class="cyber-grid"></div>
+                <div class="cyber-content">
+                    <div class="d-flex">
+                        <div class="align-self-center">
+                            <div class="cyber-icon">
+                                <i class="fa-solid fa-shield-check"></i>
+                            </div>
+                        </div>
+                        <div class="align-self-center ps-3">
+                            <div class="cyber-message">
+                                Security Alert: KYC Verification is highly recommended for account protection.
+                                <div class="cyber-action">Enable kyc</div>
+                            </div>
+                        </div>
+                        <div class="align-self-center ms-auto">
+                            <div class="cyber-close">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- Alert pop up finished-->
+
+            <!-- Main Card Slider-->
+
+
+            <div class="card card-style shadow-card shadow-card-l bg-5" data-card-height="180">
+                <div class="card-top px-3 py-3 mt-1 no-click">
+                    <h5 class="color-white font-400 mb-0 opacity-70">Total Balance</h5>
+                    <h1 class="color-white font-700 font-30">$0.00</h1>
+                </div>
+                <div class="card-bottom pb-3 px-3">
+                    <div class="d-flex">
+                        <div class="align-self-end me-auto">
+                            <a href="#" data-bs-toggle="offcanvas" data-bs-target="#account">
+                                <span class="bg-yellow-dark d-block px-3 py-1 mb-1 rounded-s font-400 font-12"><i
+                                        class="fa-solid fa-caret-up pe-2"></i> View </span> </a>
+                        </div>
+                        <div>
+                            <h4 class="color-white font-13 font-400 opacity-70 mb-n1">Revenue</h4>
+                            <h1 class="color-white font-24 font-700 RevenueSum">$0.00</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-overlay bg-black opacity-70"></div>
+            </div>
+
+
+
+            <!-- Quick Actions -->
+            <div class="content py-2">
+                <div class="d-flex text-center">
+                    <div class="me-auto">
+                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#deposit"
+                            class="icon icon-xxl rounded-m bg-theme shadow-m">
+                            <i class="font-28 color-blue-dark bi bi-arrow-up-circle"></i></a>
+                        <h6 class="font-13 opacity-80 font-500 mb-0 pt-2 text-red">Deposit</h6>
+                    </div>
+                    <div class="m-auto">
+                        <a href="#" data-bs-toggle="offcanvas" data-bs-target="#withdraw"
+                            class="icon icon-xxl rounded-m bg-theme shadow-m"><i
+                                class="font-28 color-red-dark bi bi-arrow-down-circle"></i></a>
+                        <h6 class="font-13 opacity-80 font-500 mb-0 pt-2">Withdraw</h6>
+                    </div>
+                    <div data-bs-toggle="offcanvas" data-bs-target="#send" class="m-auto">
+                        <a href="#" class="icon icon-xxl rounded-m bg-theme shadow-m"><i
+                                class="font-28 color-brown-dark bi bi-arrow-right-circle"></i></a>
+                        <h6 class="font-13 opacity-80 font-500 mb-0 pt-2">Send</h6>
+                    </div>
+                    <div data-bs-toggle="offcanvas" data-bs-target="#invest" class="m-auto">
+                        <a href="#" class="icon icon-xxl rounded-m bg-theme shadow-m"><i
+                                class="font-28 color-green-dark bi bi-piggy-bank"></i></a>
+                        <h6 class="font-13 opacity-80 font-500 mb-0 pt-2">Earn</h6>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Recent Activity Title-->
+            <div class="content my-0 mt-n2 px-1">
+                <div class="d-flex">
+                    <div class="align-self-center">
+                        <h3 class="font-16 mb-2">Crypto Wallet balance</h3>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- BTC -->
+
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/48.gif" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">BTC</h1>
+                            <div style=" display: flex;">
+                                <small class="opacity-70 me-1"><span id="btcPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="btcIcon"></i><span id="btcChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2 btcBal" id="btcBalance">0.00</h5>
+                            <h5 class="mb-0 mt-n2 btcEqu" id="btcBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ETH -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/69.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">ETH</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="ethPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="ethIcon"></i><span id="ethChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2 ethBal" id="ethBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2 ethEqu" id="ethBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USDT -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/92.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">USDT</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="usdtPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="usdtIcon"></i><span id="usdtChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2 usdtBal" id="usdtBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2 usdtEqu" id="usdtBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BNB -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/94.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">BNB</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="bnbPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="bnbIcon"></i><span id="bnbChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2" id="bnbBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2" id="bnbBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LTC -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/68.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">LTC</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="ltcPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="ltcIcon"></i><span id="ltcChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2" id="ltcBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2" id="ltcBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BCH -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/77.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">BCH</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="bchPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="bchIcon"></i><span id="bchChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2" id="bchBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2" id="bchBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASH -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/71.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">DASH</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="dashPrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="dashIcon"></i><span id="dashChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: end; padding: 5px;">
+                            <h5 class="mb-2" id="dashBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2" id="dashBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOGE -->
+            <div class="card card-styles">
+                <div class="content pb-0">
+                    <div class="d-flex">
+                        <div>
+                            <span class="icon gradient-none me-2 color-white shadow-bg shadow-bg-xs rounded-m">
+                                <img src="images/79.png" height="35px" />
+                            </span>
+                        </div>
+                        <div class="ps-1">
+                            <h1 class="font-24 mb-n1">DOGE</h1>
+                            <div style="display: flex;">
+                                <small class="opacity-70 me-1">
+                                    <span id="dogePrice" class="font-13"
+                                        style="font-weight: 600; margin-left: 3px;">$0.00</span>
+                                </small>
+                                <span>
+                                    <i id="dogeIcon"></i><span id="dogeChange"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ms-auto text-end"
+                            style="display: flex; flex-direction: column; align-items: end; justify-content: center; padding: 5px;">
+                            <h5 class="mb-2" id="dogeBalanceQty">0.00</h5>
+                            <h5 class="mb-0 mt-n2" id="dogeBalance">$0.00</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--Invest menu-->
+            <div id="invest" style="height:540px;" class="offcanvas offcanvas-bottom">
+                <div class="d-flex mx-3 mt-3 py-1">
+                    <div class="align-self-center">
+                        <h1 class="mb-0">Start Earning</h1>
+                    </div>
+                    <div class="align-self-center ms-auto">
+                        <a href="#" class="ps-4 shadow-0 me-n2" data-bs-dismiss="offcanvas">
+                            <i class="bi bi-x color-red-dark font-26 line-height-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <form method=post name="spendform"><input type="hidden" name="form_id" value=""><input type="hidden"
+                        name="form_token" value="91447936ce58e87ed0e358faa9d75dd2">
+                    <input type=hidden name=a value=deposit>
+
+                    <div class="divider divider-margins mt-3"></div>
+                    <div class="content mt-0">
+
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-wallet2 font-14"></i>
+                            <select class="form-select rounded-xs revenuePlan" id="c6" aria-label="Floating label select example"
+                                name="h_id">
+
+                                <!-- <option value="Bronze Vault">Bronze Vault</option>
+                                <option value="Silver Vault">Silver Vault</option>
+                                <option value="Gold Vault">Gold Vault</option>
+                                <option value="Platinum Vault">Platinum Vault</option>
+                                <option value="5">Diamond Vault</option>
+                                <option value="6">Titanium Vault</option>
+                                <option value="5">Crown Vault</option>
+                                <option value="6">Royal Vault</option> -->
+
+
+                            </select>
+
+                            <label class="form-label-always-active color-highlight font-11" style="margin-top: -7px;">Select Revenue
+                                Plan</label>
+                        </div>
+                        <div class="pb-3"></div>
+
+
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-wallet2 font-14"></i>
+                            <select class="form-select rounded-xs paymentMethod" id="c6" aria-label="Floating label select example"
+                                name="type" value="">
+
+
+                                <option value="bitcoin">Bitcoin Wallet</option>
+                                <option value="ethereum">Ethereum Wallet</option>
+                                <option value="usdt">USDT Wallet</option>
+                                <option value="account_77">Bitcoin Cash Wallet</option>
+                                <option value="account_68">Litecoin Wallet</option>
+                                <option value="account_71">Dash Wallet</option>
+                                <option value="account_94">BNB Wallet</option>
+
+                            </select>
+
+                            <label class="form-label-always-active color-highlight font-11" style="margin-top: -7px;">Select
+                                Wallet</label>
+                        </div>
+                        <div class="pb-3"></div>
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-code-square font-14"></i>
+                            <input type="number" class="form-control rounded-xs amount" id="c4" name="amount" />
+                            <label for="c4" class="form-label-always-active color-highlight font-11" style="margin-top: -7px;">Amount ($)</label>
+                            <span class="font-10"></span>
+                        </div>
+                        <div class="pb-2"></div>
+                        <div class="form-check form-check-custom">
+                            <input class="form-check-input" type="checkbox" name="" value="" id="c21">
+                            <label class="form-check-label" for="c21">I accept the Transfer <a href="./html/terms.html">Terms of
+                                    Service</a></label>
+                            <i class="is-checked color-yellow-dark font-14 bi bi-check-circle-fill"></i>
+                            <i class="is-unchecked color-yellow-dark font-14 bi bi-circle"></i>
+                        </div>
+
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-warning btn-lg w-100" style="padding: 12px; font-size: 16px; font-weight: 600;" onclick="continueEarn()">
+                            Continue
+                        </button>
+                    </div>
+                    <!-- <input type="submit" class="mx-3 mb-3 btn btn-full gradient-yellow shadow-bg shadow-bg-s"
+                        value="continue"> -->
+            </div>
+
+
+            </form>
+
+
+
+            <!--View account menu-->
+            <div id="account"
+                style="height: 400px; width: 320px; display: block; visibility: visible; background-image: url('https://app.ciqpay.com/images/360_F_415820132_Jngab5QfKUSmO5MnieRWrVLdLk3yYJxi.jpg'); background-size: cover;"
+                class="offcanvas offcanvas-modal rounded-m" aria-modal="true" role="dialog">
+
+
+                <div class="d-flex m-3">
+                    <div class="align-self-center">
+                        <h5 class="font-700 mb-0">Account Summary</h5>
+                    </div>
+                </div>
+
+
+
+                <div class="col-12 mb-n2 text-start" style="margin-top: 10px;">
+                    <a href="#" class="default-link card card-styles" style="height:90px">
+                        <div class="card-center px-4">
+                            <div class="d-flex">
+                                <div class="align-self-center">
+                                    <span class="icon icon-m rounded-s gradient-dark shadow-bg shadow-bg-xs"><i
+                                            class="bi bi-clipboard-data font-20 color-white"></i></span>
+                                </div>
+                                <div class="align-self-center ps-3 ms-1">
+                                    <h1 class="font-20 mb-n1 active-revenue">$<b>0.00</b></h1>
+                                    <p class="mb-0 font-12 opacity-80">Active Revenue Plan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <br />
+
+                <div class="col-12 mb-n2 text-start">
+                    <a href="#" class="default-link card card-styles" style="height:90px">
+                        <div class="card-center px-4">
+                            <div class="d-flex">
+                                <div class="align-self-center">
+                                    <span class="icon icon-m rounded-s gradient-dark shadow-bg shadow-bg-xs"><i
+                                            class="bi bi-piggy-bank font-20 color-white"></i></span>
+                                </div>
+                                <div class="align-self-center ps-3 ms-1">
+                                    <h1 class="font-20 mb-n1 RevenueSum">$<b>0.00</b></h1>
+                                    <p class="mb-0 font-12 opacity-80">Total Revenue Earned</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <br />
+
+                <div class="col-12 mb-n2 text-start">
+                    <a href="#" class="default-link card card-styles" style="height:90px">
+                        <div class="card-center px-4">
+                            <div class="d-flex">
+                                <div class="align-self-center">
+                                    <span class="icon icon-m rounded-s gradient-dark shadow-bg shadow-bg-xs"><i
+                                            class="bi bi-box-arrow-down font-20 color-white"></i></span>
+                                </div>
+                                <div class="align-self-center ps-3 ms-1">
+                                    <h1 class="font-20 mb-n1 withdrawal-summary">$<b>0.00</b></h1>
+                                    <p class="mb-0 font-12 opacity-80">Total Withdrawals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <br>
+            </div>
+
+
+            <!--Deposit menu-->
+            <div id="deposit" style="height:440px;" class="offcanvas offcanvas-bottom">
+                <div class="d-flex mx-3 mt-3 py-1">
+                    <div class="align-self-center">
+                        <h1 class="mb-0">Fund your Account</h1>
+                    </div>
+                    <div class="align-self-center ms-auto">
+                        <a href="#" class="ps-4 shadow-0 me-n2" data-bs-dismiss="offcanvas">
+                            <i class="bi bi-x color-red-dark font-26 line-height-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <form method="post"><input type="hidden" name="form_id" value=""><input type="hidden" name="form_token"
+                        value="91447936ce58e87ed0e358faa9d75dd2">
+                    <input type=hidden name=a value=deposit>
+                    <input type=hidden name=h_id value=-1>
+
+                    <div class="divider divider-margins mt-3"></div>
+                    <div class="content mt-0">
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-wallet2 font-14"></i>
+
+                <!-- In Dashboard.html - fix your select element -->
+                        <select class="form-select rounded-xs c6 color-theme" name="payment_method" id="paymentMethod">
+                            <option value="btc">Deposit using Bitcoin</option>
+                            <option value="eth">Deposit using Ethereum</option>
+                            <option value="usdt">Deposit using USDT</option>
+                            <option value="bch">Deposit using Bitcoin Cash</option>
+                            <option value="ltc">Deposit using Litecoin</option>
+                            <option value="dash">Deposit using Dash</option>
+                            <option value="bnb">Deposit using BNB</option>
+                        </select>
+
+                            <label class="form-label-always-active text-warning font-12"
+                                style="margin-top: -7px;">Payment
+                                Processor
+                            </label>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-currency-dollar"></i>
+                            <!-- <input type="number" class="form-control rounded-xs" id="c4" value="" name="amount" /> -->
+                             <input type="number" class="form-control rounded-xs" id="depAmount" name="amount" />
+                            <label class="form-label-always-active text-warning font-12"
+                                style="margin-top: -7px;">Amount ($)</label>
+                            <span class="font-10"></span>
+                        </div>
+
+                        <div class="pb-2"></div>
+                        <div class="form-check form-check-custom">
+                            <input class="form-check-input" type="checkbox" name="" value="" id="c22">
+                            <label class="form-check-label" for="c22">I accept the Transfer <a
+                                    href="../gratoms-dashboard/html/terms.html">Terms of
+                                    Service</a></label>
+                            <i class="is-checked color-yellow-dark font-14 bi bi-check-circle-fill"></i>
+                            <i class="is-unchecked color-yellow-dark font-14 bi bi-circle"></i>
+                        </div>
+
+                    </div>
+             <button type="button" class="btn btn-warning mx-3"
+                onclick="continueDeposit()">
+                Continue
+            </button>
+
+                </form>
+            </div>
+
+
+            <!-- Withdrawal menu -->
+<div id="withdraw" style="height:520px;" class="offcanvas offcanvas-bottom">
+    <div class="d-flex mx-3 mt-3 py-1">
+        <div class="align-self-center">
+            <h1 class="mb-0">Withdraw Funds</h1>
+        </div>
+        <div class="align-self-center ms-auto">
+            <a href="#" class="ps-4 shadow-0 me-n2" data-bs-dismiss="offcanvas">
+                <i class="bi bi-x color-red-dark font-26 line-height-xl"></i>
+            </a>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="form_id" value="">
+        <input type="hidden" name="form_token" value="">
+        <input type="hidden" name="a" value="withdraw">
+        <input type="hidden" name="h_id" value="-1">
+
+        <div class="divider divider-margins mt-2"></div>
+        <div class="content mt-0" style="padding-bottom: 20px;">
+            <div class="form-custom form-label form-icon mb-3">
+                <i class="bi bi-wallet2 font-14"></i>
+                <select class="form-select rounded-xs c6 color-theme" aria-label="Withdrawal Method" name="type">
+                    <option value="BTC">Bitcoin Wallet</option>
+                    <option value="ETH">Ethereum Wallet</option>
+                    <option value="USDT">USDT Wallet</option>
+                    <option value="BCH">Bitcoin Cash Wallet</option>
+                    <option value="LTC">Litecoin Wallet</option>
+                    <option value="DASH">Dash Wallet</option>
+                    <option value="BNB">BNB Wallet</option>
+                    
+                </select>
+                <label class="form-label-always-active text-warning font-12" style="margin-top: -7px;">Withdrawal Method</label>
+            </div>
+
+            <div class="form-custom form-label form-icon mb-3">
+                <i class="bi bi-currency-dollar"></i>
+                <input type="number" class="form-control rounded-xs" id="amount" placeholder="Enter amount">
+                <label class="form-label-always-active text-warning font-12" style="margin-top: -7px;">Amount ($)</label>
+                <span class="font-10"></span>
+            </div>
+
+            <div class="form-custom form-label form-icon mb-3">
+                <i class="bi bi-wallet"></i>
+                <input type="text" class="form-control rounded-xs" id="walletAddress" placeholder="Enter wallet address">
+                <label class="form-label-always-active text-warning font-12" style="margin-top: -7px;">Wallet Address</label>
+                <span class="font-10"></span>
+            </div>
+
+            <div class="form-check form-check-custom mb-4">
+                <input class="form-check-input" type="checkbox" name="" value="" id="c23">
+                <label class="form-check-label" for="c23">
+                    I accept the Withdrawal <a href="./html/terms.html">Terms of Service</a>
+                </label>
+                <i class="is-checked color-yellow-dark font-14 bi bi-check-circle-fill"></i>
+                <i class="is-unchecked color-yellow-dark font-14 bi bi-circle"></i>
+            </div>
+
+            <!-- Button container with proper spacing -->
+            <div class="text-center mt-3">
+                <button type="button" class="btn btn-warning btn-lg w-100" style="padding: 12px; font-size: 16px; font-weight: 600;" onclick="validateBeforeRedirect()">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+            <!-- trasnfer funds to user-->
+            <div id="send" style="height:600px;" class="offcanvas offcanvas-bottom">
+                <div class="d-flex mx-3 mt-3 py-1">
+                    <div class="align-self-center">
+                        <h1 class="mb-0">Send funds to another user</h1>
+                    </div>
+                    <div class="align-self-center ms-auto">
+                        <a href="#" class="ps-4 shadow-0 me-n2" data-bs-dismiss="offcanvas">
+                            <i class="bi bi-x color-red-dark font-26 line-height-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <form method=post><input type="hidden" name="form_id" value=""><input type="hidden" name=""
+                        value="">
+                    <input type=hidden name=a value=internal_transfer>
+                    <input type=hidden name=action value=preview>
+                    <input type=hidden name=say value="">
+
+                    <div class="divider divider-margins mt-3"></div>
+                    <div class="content mt-0">
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-wallet2 font-14"></i>
+                            <select class="form-select rounded-xs color-theme" id="c6" aria-label="Floating label select example"
+                                name="ec" value="">
+
+
+                                <option value="">Bitcoin wallet </option>
+                                <option value="">Ethereum wallet </option>
+                                <option value="">USDT wallet </option>
+                                <option value="">Bitcoin Cash wallet </option>
+                                <option value="">Litecoin wallet </option>
+                                <option value="">Dash wallet </option>
+                                <option value="">BNB wallet </option>
+
+                            </select>
+
+                            <label class="form-label-always-active color-highlight font-11" style="margin-top: -7px;">Transfer
+                                from</label>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-code-square font-14"></i>
+                            <input type="number" class="form-control rounded-xs" id="c4" value="" name="amount" />
+                            <label for="c4" class="form-label-always-active color-highlight font-11"  style="margin-top: -7px;">Amount ($)</label>
+                            <span class="font-10"></span>
+                        </div>
+
+
+                        <div class="pb-3"></div>
+
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-code-square font-14"></i>
+                            <input type="text" class="form-control rounded-xs" id="c4" name=account
+                                placeholder="gratoms.com" value="" />
+                            <label for="c4" class="form-label-always-active color-highlight font-11"  style="margin-top: -7px;">To
+                                (Username)</label>
+                            <span class="font-10"></span>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+
+                        <div class="form-custom form-label form-icon">
+                            <i class="bi bi-code-square font-14"></i>
+                            <input type="text" class="form-control rounded-xs" id="c4" name="comment" placeholder=""
+                                value="" />
+                            <label for="c4" class="form-label-always-active color-highlight font-11"  style="margin-top: -7px;">Description</label>
+                            <span class="font-10"></span>
+                        </div>
+
+
+                        <div class="pb-2"></div>
+                        <div class="form-check form-check-custom">
+                            <input class="form-check-input" type="checkbox" checked name="" value="" id="c51">
+                            <label class="form-check-label" for="c51">I accept the Transfer <a href="./html/terms.html">Terms of
+                                    Service</a></label>
+                            <i class="is-checked color-yellow-dark font-14 bi bi-check-circle-fill"></i>
+                            <i class="is-unchecked color-yellow-dark font-14 bi bi-circle"></i>
+                        </div>
+
+                    </div>
+                    <button type="submit"
+                        class="mx-3 mb-3 btn btn-full gradient-yellow shadow-bg shadow-bg-s">Continue</button>
+            </div>
+            </form>
+
+       <!-- Withdrawal Modal -->
+ 
+        <div style="width: 320px; display: block;" id="error1" class="offcanvas offcanvas-modal offcanvas-detached rounded-m" tabindex="-1" aria-modal="true" role="dialog">
+            <div class="content text-center">
+                <i style="font-size:65px;" class="scale-box bi bi-x-circle-fill color-red-dark shadow-s rounded-circle p-0 mt-3 mb-3 d-inline-block"></i>
+                <h1 class="pt-3 font-28">Failed</h1>
+                <p class="font-14 mb-0">
+                    You have requested an amount larger than the one on your balance. 
+                </p>
+                <a href="#" data-bs-dismiss="offcanvas" class="btn btn-full gradient-red shadow-bg shadow-bg-xs">Okay</a>
+            </div>
+        </div>
+
+        <div style="width: 320px; display: block;" id="error2" class="offcanvas offcanvas-modal offcanvas-detached rounded-m" tabindex="-1" aria-modal="true" role="dialog">
+            <div class="content text-center">
+                <i style="font-size:65px;" class="scale-box bi bi-x-circle-fill color-red-dark shadow-s rounded-circle p-0 mt-3 mb-3 d-inline-block"></i>
+                <h1 class="pt-3 font-28">Invalid Input</h1>
+                <p class="font-14 mb-0">
+                    Please enter a valid number greater than 0. 
+                </p>
+                <a href="#" data-bs-dismiss="offcanvas" class="btn btn-full gradient-red shadow-bg shadow-bg-xs">Okay</a>
+            </div>
+        </div>
+
+        <div style="width: 320px; display: block;" id="error3" class="offcanvas offcanvas-modal offcanvas-detached rounded-m" tabindex="-1" aria-modal="true" role="dialog">
+            <div class="content text-center">
+                <i style="font-size:65px;" class="scale-box bi bi-x-circle-fill color-red-dark shadow-s rounded-circle p-0 mt-3 mb-3 d-inline-block"></i>
+                <h1 class="pt-3 font-28">Empty Field</h1>
+                <p class="font-14 mb-0">
+                    Amount field cannot be empty. Please enter a value. 
+                </p>
+                <a href="#" data-bs-dismiss="offcanvas" class="btn btn-full gradient-red shadow-bg shadow-bg-xs">Okay</a>
+            </div>
+        </div>
+          
+        
+        <script src="../gratoms-dashboard/scripts/bootstrap.min.js"></script>
+        <script src="../gratoms-dashboard/scripts/custom.js"></script>
+        <script src="../gratoms-dashboard/scripts/subDashboard.js"></script>
+        <script src="../modal/modal.js"></script>
+        <script src="../gratoms-dashboard/scripts/confirmation.js"></script>
+        <!-- <script src="../gratoms-dashboard/scripts/earn.js"></script> -->
+        <script src="../js/mainAuth.js"></script>
+        <script src="../js/depositFE.js"></script>
+        <script src="../js/dashboard.js"></script>
+        <script src="../js/withdrawal.js"></script>
+        <script src="../js/trials.js"></script>
+        <script src="./scripts/ofo.js"></script>
+        <!-- <script src="../js/depositFE.js"></script> -->
+        <!-- <script src="../gratoms-dashboard/scripts/investRev.js"></script> -->
+</body>
+</html>
