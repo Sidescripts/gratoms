@@ -1,28 +1,16 @@
+
 const cron = require('node-cron');
 const { ROIService } = require('./investmentServices');
 const logger = require('../../utils/logger');
 
 function startROICron() {
-    let cronSchedule;
-    let scheduleDescription;
+    let cronSchedule = '0 0 * * *'; // Run daily at midnight UTC
+    let scheduleDescription = 'Daily at 00:00 UTC';
     
-    // Set cron schedule based on environment
-    switch(process.env.NODE_ENV) {
-        case 'production':
-            cronSchedule = '0 0,12 * * *'; // Every 12 hours at 00:00 and 12:00
-            scheduleDescription = 'Every 12 hours (00:00 and 12:00 UTC)';
-            break;
-        case 'staging':
-            cronSchedule = '0 */6 * * *'; // Every 6 hours at minute 0
-            scheduleDescription = 'Every 6 hours';
-            break;
-        case 'development':
-            cronSchedule = '0 */1 * * *'; // Every hour at minute 0
-            scheduleDescription = 'Every hour (development mode)';
-            break;
-        default:
-            cronSchedule = '0 0,12 * * *';
-            scheduleDescription = 'Every 12 hours (default)';
+    // Override for development
+    if (process.env.NODE_ENV === 'development') {
+        cronSchedule = '0 */1 * * *'; // Every hour for testing
+        scheduleDescription = 'Every hour (development mode)';
     }
     
     // Schedule the cron job
@@ -31,7 +19,7 @@ function startROICron() {
             const startTime = new Date();
             logger.info(`🕛 Starting scheduled ROI payout check at ${startTime.toISOString()}`);
             
-            // Process completed investments
+            // Process completed investments and daily accruals
             const result = await ROIService.processCompletedInvestments();
             
             const endTime = new Date();
@@ -39,23 +27,21 @@ function startROICron() {
             
             // Log results
             if (result.processed > 0) {
-                logger.info(`💰 Successfully paid out ${result.processed} investments`);
+                logger.info(`💰 Successfully processed ${result.processed} investments`);
             }
             
             if (result.failed > 0) {
-                logger.warn(`⚠️  ${result.failed} investments failed to process`);
-                
-                // Log individual errors for debugging
+                logger.warn(`⚠️ ${result.failed} investments failed to process`);
                 result.errors.forEach((error, index) => {
-                    logger.error(`   Error ${index + 1}: Investment ${error.investment_id} - ${error.error}`);
+                    logger.error(`   Error ${index + 1}: Investment ${error.investment_id || 'unknown'} - ${error.error}`);
                 });
             }
             
             if (result.processed === 0 && result.failed === 0) {
-                logger.info('✅ No completed investments found for payout');
+                logger.info('✅ No investments found for processing');
             }
             
-            logger.info(`⏱️  ROI processing completed in ${duration}ms`);
+            logger.info(`⏱️ ROI processing completed in ${duration}ms`);
             
         } catch (error) {
             logger.error('❌ ROI cron job execution failed:', error);

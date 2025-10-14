@@ -4,16 +4,16 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-// const {startROICron} = require("./modules/invest/cronjobInvestment");
 const {sequelize,connectDB} = require("./config/db");
-const {notFound, errorHandler} = require("./middelwares/errorHandler")
+const {notFound, errorHandler} = require("./middlewares/errorHandler");
 const logger = require("./utils/logger");
-// const userRoute = require("./modules/dashboardModule/dashboardRouter");
-// const authRoute = require("./modules/auth/authRouter");
-// const depositRoute = require("./modules/depositModule/depositRouter");
-// const withdrawalRoute = require("./modules/withdrawal/withdrawalRouter");
-// const investRoute = require("./modules/invest/investRouter");
-// const adminRoutes = require("./adminModule/adminRoute");
+const {startROICron} = require("./modules/invest/cronjobInvestment");
+const userRoute = require("./modules/dashboardModules/dashboardRouter");
+const authRoute = require("./modules/auth/authRouter");
+const depositRoute = require("./modules/depositModule/depositRouter");
+const withdrawalRoute = require("./modules/withdrawal/withdrawalRouter");
+const investRoute = require("./modules/invest/investRouter");
+const adminRoutes = require("./adminModule/adminRoute");
 const path = require('path');
 const app = express();
 
@@ -132,23 +132,23 @@ app.get("/health", async (req, res) => {
 });
 
 //routes
-// app.use('/api/v1/user', userRoute);
-// app.use('/api/v1/auth', authRoute);
-// app.use('/api/v1/deposit', depositRoute);
-// app.use('/api/v1/withdrawal', withdrawalRoute);
-// app.use('/api/v1/invest', investRoute);
-// app.use("/api/v1/admin", adminRoutes);
+app.use('/api/v1/user', userRoute);
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/deposit', depositRoute);
+app.use('/api/v1/withdrawal', withdrawalRoute);
+app.use('/api/v1/invest', investRoute);
+app.use("/api/v1/admin", adminRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
 
 const startServer = async () => {
-    const port = process.env.PORT || 2000;
+    const port = process.env.PORT || 1200;
     try {
         await connectDB();
         
-        // startROICron();
-        // logger.info('✅ ROI cron job started');
+        startROICron();
+        logger.info('✅ ROI cron job started');
 
         // Capture the server instance - THIS FIXES THE "Server is not defined" ERROR
         const server = app.listen(port, () => {

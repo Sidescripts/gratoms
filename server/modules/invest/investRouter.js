@@ -1,6 +1,6 @@
 const express = require("express");
 const AuthMiddleware = require("../../middlewares/userAuthMiddleware");
-const InvestmentController = require("./investController");
+const {InvestmentController, TransactionController} = require("./investController");
 const AdminInvestmentController = require("../../adminModule/investAdminModule/adminInvestController");
 const router = express.Router();
 
@@ -15,6 +15,9 @@ router.get("/invest-history", AuthMiddleware, InvestmentController().getUserInve
 
 // oneInvestment
 router.get("/:id", AuthMiddleware, InvestmentController().getSingleInvestment);
+
+// transaction
+router.get("/transactions", AuthMiddleware, TransactionController);
 
 
 module.exports = router;

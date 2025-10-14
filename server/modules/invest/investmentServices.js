@@ -1,6 +1,8 @@
-const { Investment, User } = require('../../model');
+const { Investment, InvestmentPlan, User, Transaction } = require('../../model');
 const { Op } = require('sequelize');
 const logger = require('../../utils/logger');
+const { v4: uuidv4 } = require('uuid');
+const EmailTemplate = require("./accuralEmail");
 
 function ROIService() {
   return {
@@ -9,25 +11,28 @@ function ROIService() {
       
       try {
         const now = new Date();
-        logger.debug(`🔍 Looking for active investments for daily ROI accrual as of: ${now.toISOString()}`);
+        logger.debug(`🔍 Processing daily ROI accrual as of: ${now.toISOString()}`);
 
-        // Find active investments that are ongoing or ending
+        // Find active investments that are ongoing
         const activeInvestments = await Investment.findAll({
           where: {
             status: 'active',
             start_date: { [Op.lte]: now }, // Started
-            end_date: { [Op.gte]: now }    // Not yet ended (for accrual during period)
+            end_date: { [Op.gte]: now }    // Not yet ended
           },
           include: [{
             model: User,
             as: 'user',
             attributes: ['id', 'walletBalance', 'revenue', 'username']
+          }, {
+            model: InvestmentPlan,
+            as: 'investmentPlan',
+            attributes: ['roi_percentage', 'duration_days']
           }]
         });
 
-        logger.debug(`📊 Found ${activeInvestments.length} active investments to check for daily accrual`);
+        logger.debug(`📊 Found ${activeInvestments.length} active investments for daily ROI accrual`);
 
-        // One day in milliseconds
         const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
         // Process each investment
@@ -41,62 +46,60 @@ function ROIService() {
               throw new Error(`Invalid start_date or end_date for investment ${investment.id}`);
             }
 
+            // Calculate daily ROI based on percentage
             const durationDays = Math.ceil((endDate - startDate) / ONE_DAY_MS);
-            const dailyRoi = parseFloat(investment.expected_roi) / durationDays;
+            const roiPercentage = investment.investmentPlan.roi_percentage / 100; // e.g., 10% -> 0.1
+            const totalROI = parseFloat(investment.amount) * roiPercentage;
+            const dailyRoi = totalROI / durationDays;
+
             const currentBalanceNum = parseFloat(investment.user.walletBalance) || 0;
             const currentRevenueNum = parseFloat(investment.user.revenue) || 0;
 
-            // Determine last payout date (repurposing payout_date as last_daily_payout_date; null means start_date)
-            let lastPayoutDate = investment.payout_date ? new Date(investment.payout_date) : new Date(startDate);
-            if (isNaN(lastPayoutDate.getTime())) {
-              lastPayoutDate = new Date(startDate);
+            // Check last ROI accrual date
+            let lastRoiAccrual = investment.payout_date ? new Date(investment.payout_date) : new Date(startDate);
+            if (isNaN(lastRoiAccrual.getTime())) {
+              lastRoiAccrual = new Date(startDate);
             }
 
             const todayStart = new Date(now);
             todayStart.setHours(0, 0, 0, 0); // Start of today
 
-            // Check if a new day has started since last payout
-            if (todayStart > lastPayoutDate) {
-              // Calculate days elapsed since start (for logging/validation)
+            // Only accrue if a new day has started
+            if (todayStart > lastRoiAccrual) {
               const startDay = new Date(startDate);
               startDay.setHours(0, 0, 0, 0);
               const daysElapsed = Math.floor((todayStart - startDay) / ONE_DAY_MS) + 1;
 
-              // Create a new Date object for endDate to avoid modifying the original
               const endDateStartOfDay = new Date(endDate);
               endDateStartOfDay.setHours(0, 0, 0, 0);
-              
-              // Check if today is the last day or beyond
-              let isLastDay = (todayStart.getTime() >= endDateStartOfDay.getTime());
+              const isLastDay = todayStart.getTime() >= endDateStartOfDay.getTime();
 
-              let amountToAdd;
+              let amountToAdd = dailyRoi;
               if (isLastDay) {
-                // On last day, ensure full remaining is paid
-                const totalDue = parseFloat(investment.expected_roi);
-                const alreadyPaid = dailyRoi * (daysElapsed - 1); // Approximate, but since we pay daily, should be exact
-                amountToAdd = totalDue - alreadyPaid;
-                amountToAdd = Math.max(amountToAdd, dailyRoi); // At least daily
-              } else {
-                amountToAdd = dailyRoi;
+                // Ensure full remaining ROI is paid on last day
+                const totalDue = totalROI;
+                const alreadyPaid = dailyRoi * (daysElapsed - 1);
+                amountToAdd = Math.max(totalDue - alreadyPaid, dailyRoi);
               }
 
-              const roiAmountNum = parseFloat(amountToAdd) || 0;
+              const roiAmountNum = parseFloat(amountToAdd.toFixed(2)); // Round to 2 decimals
               const newBalanceNum = currentBalanceNum + roiAmountNum;
               const newRevenueNum = currentRevenueNum + roiAmountNum;
 
               logger.info(`Balance calculation debug:`, {
                 investmentId: investment.id,
                 userId: investment.userId,
-                currentBalance: investment.user.walletBalance,
-                currentRevenue: investment.user.revenue,
-                roiAmount: amountToAdd,
+                currentBalance: currentBalanceNum,
+                currentRevenue: currentRevenueNum,
+                roiAmount: roiAmountNum,
                 calculatedNewBalance: newBalanceNum,
                 calculatedNewRevenue: newRevenueNum,
                 daysElapsed,
+                durationDays,
                 isLastDay
               });
 
-              // Update both walletBalance and revenue
+              // Update user walletBalance and revenue
               await User.increment(
                 { 
                   walletBalance: roiAmountNum,
@@ -104,28 +107,47 @@ function ROIService() {
                 },
                 { where: { id: investment.user.id } }
               );
+              await Transaction.create({
+                  userId: investment.user.id,
+                  investmentId: investment.id,
+                  amount: roiAmountNum,
+                  type: 'ROI Credit',
+                  description: `Daily ROI for ${investment.investmentPlan.name} investment`,
+                  transactionId: `txn_${uuidv4()}`,
+              });
 
-              // Update investment: set payout_date to today (as last_daily_payout)
+              // Update investment with last ROI accrual date
               await investment.update({
-                payout_date: todayStart // Repurposed as last_daily_payout_date
+                payout_date: todayStart // Tracks last daily ROI accrual
               });
 
               if (isLastDay) {
-                // Complete the investment on the last day
                 await investment.update({
                   status: 'completed',
-                  actual_roi: investment.expected_roi,
-                  payout_date: endDate // Set final payout_date to end_date for completion record
+                  actual_roi: totalROI,
+                  payout_date: endDate
                 });
                 logger.info(`✅ Completed investment ${investment.id} on last day`);
               } else {
-                logger.info(`💸 Accrued daily ROI of ${amountToAdd} for investment ${investment.id} (day ${daysElapsed}/${durationDays})`);
+                logger.info(`💸 Accrued daily ROI of ${roiAmountNum} for investment ${investment.id} (day ${daysElapsed}/${durationDays})`);
+              }
+
+              // Send ROI accrual email outside transaction to avoid rollback
+              try {
+                await EmailTemplate.roiAccrualEmail({
+                  email: investment.user.email,
+                  planName: investment.investmentPlan.name,
+                  roiAmount: roiAmountNum,
+                  date: todayStart,
+                  investmentId: investment.transaction_id,
+                });
+              } catch (emailError) {
+                logger.error(`Failed to send daily ROI email for investment ${investment.id}:`, emailError);
               }
 
               result.processed++;
-              
             } else {
-              logger.debug(`⏭️ Skipping ${investment.id}: Already accrued for today`);
+              logger.debug(`⏭️ Skipping investment ${investment.id}: Already accrued for today`);
             }
 
           } catch (error) {
@@ -135,44 +157,41 @@ function ROIService() {
               user_id: investment.user.id,
               error: error.message
             });
-            
             logger.error(`❌ Failed to process investment ${investment.id}:`, error);
           }
         }
 
-        // Handle overdue completions (investments that ended but not marked)
+        // Handle overdue investments
         const overdueInvestments = await Investment.findAll({
           where: {
             status: 'active',
-            end_date: { [Op.lt]: now },
-            payout_date: null
+            end_date: { [Op.lt]: now }
           },
           include: [{
             model: User,
             as: 'user',
             attributes: ['id', 'walletBalance', 'revenue', 'username']
+          }, {
+            model: InvestmentPlan,
+            as: 'investmentPlan',
+            attributes: ['roi_percentage']
           }]
         });
 
         for (const investment of overdueInvestments) {
           try {
-            const endDate = new Date(investment.end_date);
-            if (isNaN(endDate.getTime())) {
-              throw new Error(`Invalid end_date for overdue investment ${investment.id}`);
-            }
-
-            const roiAmount = investment.expected_roi;
-            const roiAmountNum = parseFloat(roiAmount) || 0;
+            const roiPercentage = investment.investmentPlan.roi_percentage / 100;
+            const roiAmount = parseFloat(investment.amount) * roiPercentage;
+            const roiAmountNum = parseFloat(roiAmount.toFixed(2));
 
             logger.info(`Balance calculation debug (overdue):`, {
               investmentId: investment.id,
               userId: investment.userId,
               currentBalance: investment.user.walletBalance,
               currentRevenue: investment.user.revenue,
-              roiAmount: roiAmount
+              roiAmount: roiAmountNum
             });
 
-            // Update both walletBalance and revenue for overdue investment
             await User.increment(
               { 
                 walletBalance: roiAmountNum,
@@ -181,16 +200,24 @@ function ROIService() {
               { where: { id: investment.user.id } }
             );
 
-            // Complete overdue investment
+            await Transaction.create({
+                userId: investment.user.id,
+                investmentId: investment.id,
+                amount: roiAmountNum,
+                type: 'ROI Credit',
+                description: `Overdue ROI for ${investment.investmentPlan.name} investment`,
+                transactionId: `txn_${uuidv4()}`,
+              });
+
+
             await investment.update({
               status: 'completed',
-              actual_roi: roiAmount,
+              actual_roi: roiAmountNum,
               payout_date: now
             });
 
             result.processed++;
-            
-            logger.info(`💸 Paid overdue full ROI of ${roiAmount} to user ${investment.user.username} (${investment.user.id})`);
+            logger.info(`💸 Paid overdue full ROI of ${roiAmountNum} to user ${investment.user.username} (${investment.user.id})`);
 
           } catch (error) {
             result.failed++;
@@ -199,7 +226,6 @@ function ROIService() {
               user_id: investment.user.id,
               error: error.message
             });
-            
             logger.error(`❌ Failed to process overdue investment ${investment.id}:`, error);
           }
         }
@@ -219,3 +245,4 @@ module.exports = {
   ROIService: ROIService(),
   processCompletedInvestments: ROIService().processCompletedInvestments
 };
+
