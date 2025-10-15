@@ -49,11 +49,11 @@ function ROIService() {
             // Calculate daily ROI based on percentage
             const durationDays = Math.ceil((endDate - startDate) / ONE_DAY_MS);
             const roiPercentage = investment.investmentPlan.roi_percentage / 100; // e.g., 10% -> 0.1
-            const totalROI = parseFloat(investment.amount) * roiPercentage;
+            const totalROI = parseFloat(investment.amount) * roiPercentage * durationDays;
             const dailyRoi = totalROI / durationDays;
 
-            const currentBalanceNum = parseFloat(investment.user.walletBalance) || 0;
-            const currentRevenueNum = parseFloat(investment.user.revenue) || 0;
+            // const currentBalanceNum = parseFloat(investment.user.walletBalance) || 0;
+            // const currentRevenueNum = parseFloat(investment.user.revenue) || 0;
 
             // Check last ROI accrual date
             let lastRoiAccrual = investment.payout_date ? new Date(investment.payout_date) : new Date(startDate);
@@ -83,21 +83,21 @@ function ROIService() {
               }
 
               const roiAmountNum = parseFloat(amountToAdd.toFixed(2)); // Round to 2 decimals
-              const newBalanceNum = currentBalanceNum + roiAmountNum;
-              const newRevenueNum = currentRevenueNum + roiAmountNum;
+              // const newBalanceNum = currentBalanceNum + roiAmountNum;
+              // const newRevenueNum = currentRevenueNum + roiAmountNum;
 
-              logger.info(`Balance calculation debug:`, {
-                investmentId: investment.id,
-                userId: investment.userId,
-                currentBalance: currentBalanceNum,
-                currentRevenue: currentRevenueNum,
-                roiAmount: roiAmountNum,
-                calculatedNewBalance: newBalanceNum,
-                calculatedNewRevenue: newRevenueNum,
-                daysElapsed,
-                durationDays,
-                isLastDay
-              });
+              // logger.info(`Balance calculation debug:`, {
+              //   investmentId: investment.id,
+              //   userId: investment.userId,
+              //   currentBalance: currentBalanceNum,
+              //   currentRevenue: currentRevenueNum,
+              //   roiAmount: roiAmountNum,
+              //   calculatedNewBalance: newBalanceNum,
+              //   calculatedNewRevenue: newRevenueNum,
+              //   daysElapsed,
+              //   durationDays,
+              //   isLastDay
+              // });
 
               // Update user walletBalance and revenue
               await User.increment(
@@ -174,14 +174,16 @@ function ROIService() {
           }, {
             model: InvestmentPlan,
             as: 'investmentPlan',
-            attributes: ['roi_percentage']
+            attributes: ['roi_percentage', 'duration_days']
           }]
         });
+        //const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
         for (const investment of overdueInvestments) {
           try {
             const roiPercentage = investment.investmentPlan.roi_percentage / 100;
-            const roiAmount = parseFloat(investment.amount) * roiPercentage;
+            const duration = investment.investmentPlan.duration_days;
+            const roiAmount = parseFloat(investment.amount) * roiPercentage * duration;
             const roiAmountNum = parseFloat(roiAmount.toFixed(2));
 
             logger.info(`Balance calculation debug (overdue):`, {

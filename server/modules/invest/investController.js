@@ -137,11 +137,10 @@ function InvestmentController() {
         );
 
         // Calculate expected ROI as a percentage
+        const duration = plan.duration_days; // e.g., 10% -> 0.1
         const roiPercentage = plan.roi_percentage / 100; // e.g., 10% -> 0.1
-        const expectedROI = amount * roiPercentage; // ROI amount only
-        // If you want the total (principal + ROI), use:
-        // const expectedROI = amount + (amount * roiPercentage);
-
+        const expectedROI = amount * roiPercentage * duration; // ROI amount only
+        
         // Create investment record
         const startDate = new Date();
         const endDate = new Date();

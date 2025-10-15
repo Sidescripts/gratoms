@@ -64,7 +64,7 @@ app.use(
           "https://fonts.gstatic.com",
           "https://cdn.jsdelivr.net",
           "data:",
-          "http://localhost:2000", // Add for development
+          "http://localhost:1200", // Add for development
           "https://vitron-trade.com/"
         ],
         mediaSrc: [
@@ -79,13 +79,19 @@ app.use(
           "https://*.smartsuppcdn.com",
           "wss://*.smartsupp.com",
           "wss://websocket-visitors.smartsupp.com", // Explicitly allow Smartsupp WebSocket
-          "https://api.coingecko.com"
+          "https://api.coingecko.com",
+          "https://cdn.jsdelivr.net", // Added for Bootstrap/Swiper source maps
         ],
         scriptSrcAttr: ["'unsafe-inline'"],
         frameSrc: [
           "https://*.smartsupp.com",
-          "https://*.smartsuppcdn.com"
-        ]
+          "https://*.smartsuppcdn.com",
+          "https://www.youtube.com", // Added for YouTube iframes
+          "https://www.youtube-nocookie.com", // Added for YouTube privacy-enhanced iframes
+        ],
+        // Removed duplicate scriptSrcAttr
+        objectSrc: ["'none'"], // Added for security
+        upgradeInsecureRequests: [], // Added for HTTPS enforcement
       }
     }
   })
