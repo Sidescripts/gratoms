@@ -52,9 +52,6 @@ function ROIService() {
             const totalROI = parseFloat(investment.amount) * roiPercentage * durationDays;
             const dailyRoi = totalROI / durationDays;
 
-            // const currentBalanceNum = parseFloat(investment.user.walletBalance) || 0;
-            // const currentRevenueNum = parseFloat(investment.user.revenue) || 0;
-
             // Check last ROI accrual date
             let lastRoiAccrual = investment.payout_date ? new Date(investment.payout_date) : new Date(startDate);
             if (isNaN(lastRoiAccrual.getTime())) {
@@ -83,23 +80,8 @@ function ROIService() {
               }
 
               const roiAmountNum = parseFloat(amountToAdd.toFixed(2)); // Round to 2 decimals
-              // const newBalanceNum = currentBalanceNum + roiAmountNum;
-              // const newRevenueNum = currentRevenueNum + roiAmountNum;
 
-              // logger.info(`Balance calculation debug:`, {
-              //   investmentId: investment.id,
-              //   userId: investment.userId,
-              //   currentBalance: currentBalanceNum,
-              //   currentRevenue: currentRevenueNum,
-              //   roiAmount: roiAmountNum,
-              //   calculatedNewBalance: newBalanceNum,
-              //   calculatedNewRevenue: newRevenueNum,
-              //   daysElapsed,
-              //   durationDays,
-              //   isLastDay
-              // });
-
-              // Update user walletBalance and revenue
+              // Update user walletBalance and revenue for daily ROI
               await User.increment(
                 { 
                   walletBalance: roiAmountNum,
@@ -107,13 +89,15 @@ function ROIService() {
                 },
                 { where: { id: investment.user.id } }
               );
+
+              // Create transaction for ROI
               await Transaction.create({
-                  userId: investment.user.id,
-                  investmentId: investment.id,
-                  amount: roiAmountNum,
-                  type: 'ROI Credit',
-                  description: `Daily ROI for ${investment.investmentPlan.name} investment`,
-                  transactionId: `txn_${uuidv4()}`,
+                userId: investment.user.id,
+                investmentId: investment.id,
+                amount: roiAmountNum,
+                type: 'ROI Credit',
+                description: `Daily ROI for ${investment.investmentPlan.name} investment`,
+                transactionId: `txn_${uuidv4()}`,
               });
 
               // Update investment with last ROI accrual date
@@ -122,12 +106,20 @@ function ROIService() {
               });
 
               if (isLastDay) {
+                // Return the initial investment amount to walletBalance only
+                const investmentAmount = parseFloat(investment.amount);
+                await User.increment(
+                  { walletBalance: investmentAmount },
+                  { where: { id: investment.user.id } }
+                );
+
+                // Mark investment as completed
                 await investment.update({
                   status: 'completed',
                   actual_roi: totalROI,
                   payout_date: endDate
                 });
-                logger.info(`✅ Completed investment ${investment.id} on last day`);
+                logger.info(`✅ Completed investment ${investment.id} on last day, returned capital ${investmentAmount}`);
               } else {
                 logger.info(`💸 Accrued daily ROI of ${roiAmountNum} for investment ${investment.id} (day ${daysElapsed}/${durationDays})`);
               }
@@ -177,7 +169,6 @@ function ROIService() {
             attributes: ['roi_percentage', 'duration_days']
           }]
         });
-        //const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
         for (const investment of overdueInvestments) {
           try {
@@ -194,6 +185,7 @@ function ROIService() {
               roiAmount: roiAmountNum
             });
 
+            // Update user walletBalance and revenue for ROI
             await User.increment(
               { 
                 walletBalance: roiAmountNum,
@@ -202,16 +194,34 @@ function ROIService() {
               { where: { id: investment.user.id } }
             );
 
+            // Return the initial investment amount to walletBalance only
+            const investmentAmount = parseFloat(investment.amount);
+            await User.increment(
+              { walletBalance: investmentAmount },
+              { where: { id: investment.user.id } }
+            );
+
+            // Create transaction for ROI
             await Transaction.create({
-                userId: investment.user.id,
-                investmentId: investment.id,
-                amount: roiAmountNum,
-                type: 'ROI Credit',
-                description: `Overdue ROI for ${investment.investmentPlan.name} investment`,
-                transactionId: `txn_${uuidv4()}`,
-              });
+              userId: investment.user.id,
+              investmentId: investment.id,
+              amount: roiAmountNum,
+              type: 'ROI Credit',
+              description: `Overdue ROI for ${investment.investmentPlan.name} investment`,
+              transactionId: `txn_${uuidv4()}`,
+            });
 
+            // Create transaction for capital return
+            await Transaction.create({
+              userId: investment.user.id,
+              investmentId: investment.id,
+              amount: investmentAmount,
+              type: 'Capital Return',
+              description: `Return of capital for ${investment.investmentPlan.name} investment`,
+              transactionId: `txn_${uuidv4()}`,
+            });
 
+            // Mark investment as completed
             await investment.update({
               status: 'completed',
               actual_roi: roiAmountNum,
@@ -219,7 +229,7 @@ function ROIService() {
             });
 
             result.processed++;
-            logger.info(`💸 Paid overdue full ROI of ${roiAmountNum} to user ${investment.user.username} (${investment.user.id})`);
+            logger.info(`💸 Paid overdue full ROI of ${roiAmountNum} and returned capital ${investmentAmount} to user ${investment.user.username} (${investment.user.id})`);
 
           } catch (error) {
             result.failed++;
@@ -247,4 +257,3 @@ module.exports = {
   ROIService: ROIService(),
   processCompletedInvestments: ROIService().processCompletedInvestments
 };
-

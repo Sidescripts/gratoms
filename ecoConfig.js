@@ -1,7 +1,7 @@
 
 module.exports = {
     apps: [{
-      name: 'vitron-app',
+      name: 'gratom-app',
       script: './server/app.js',  // Your entry file
       instances: 1,
       exec_mode: 'cluster',
