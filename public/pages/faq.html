@@ -542,11 +542,15 @@
                 </div> -->
             </div>
             <div class="copyright">
-                <p>&copy; 2023 gratoms. All rights reserved.</p>
+                <p>&copy; <span id="year"></span> Gratoms. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
+    <script>
+        // Auto-update copyright year
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    
   <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
