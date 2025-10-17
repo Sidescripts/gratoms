@@ -33,7 +33,7 @@
         if (!alertWrapper) return;
         
         const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
-        
+    
         // Update notification content
         const iconElement = alertWrapper.querySelector('.cyber-icon i');
         const messageElement = alertWrapper.querySelector('.cyber-message');
