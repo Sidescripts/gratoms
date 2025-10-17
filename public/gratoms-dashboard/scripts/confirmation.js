@@ -12,3 +12,4 @@ function copyWallet() {
     alert("No wallet address available to copy.");
   }
 }
+
