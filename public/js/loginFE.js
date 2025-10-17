@@ -61,7 +61,7 @@ async function handleLogin(event) {
         submitButton.textContent = 'Login';
         return;
     }
-    
+
     try {
         
         const response = await fetch('/api/v1/auth/login', {
@@ -87,7 +87,7 @@ async function handleLogin(event) {
             // console.log('Token received:', data.token);
             Modal.success('success', 'Welcome back to gratoms-trade. Redirecting to dashboard...');
             setTimeout(() =>{
-                window.location.href = "../gratoms-Dashboard/Dashboard.html"
+                window.location.href = "../gratoms-dashboard/Dashboard.html"
             }, 2000)
         }else{
             // Enhanced error handling
