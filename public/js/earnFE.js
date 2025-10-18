@@ -76,7 +76,7 @@
                     <li><span>Instant Withdrawal</span> <b>Yes</b></li>
                   </ul>
                   <div class="earn-box">
-                    <p class="mb-1"><b>$ ${plan.description}</b></p>
+                    <p class="mb-1"><b>${plan.description}</b></p>
                   </div>
                   <label class="btn btn-plan mb-3" data-bs-toggle="modal" data-bs-target="#investNowModal"
                     onclick="setPlan('${plan.id}', '${plan.name}', ${plan.min_amount}, ${plan.max_amount})">Invest Now</label>
