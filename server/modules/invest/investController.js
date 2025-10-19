@@ -164,21 +164,24 @@ function InvestmentController() {
             await User.update({
               btcBal: user.btcBal - amount,
               walletBalance: user.walletBalance - amount,
-              totalRevenue: user.totalRevenue + amount
+              totalRevenue: parseFloat(user.totalRevenue) + parseFloat(amount)
+              // totalRevenue: user.totalRevenue + amount
             }, { where: { id: userId } });
             break;
           case 'eth':
             await User.update({
                 walletBalance: user.walletBalance - amount,
                 ethBal: user.ethBal - amount,
-              totalRevenue: user.totalRevenue + amount
+                totalRevenue: parseFloat(user.totalRevenue) + parseFloat(amount)
+              // totalRevenue: user.totalRevenue + amount
             }, { where: { id: userId } });
             break;
           case 'usdt':
             await User.update({
               usdtBal: user.usdtBal - amount,
               walletBalance: user.walletBalance - amount,
-              totalRevenue: user.totalRevenue + amount
+              totalRevenue: parseFloat(user.totalRevenue) + parseFloat(amount)
+              // totalRevenue: user.totalRevenue + amount
             }, { where: { id: userId } });
             break;
         }
