@@ -125,18 +125,29 @@ function ROIService() {
               }
 
               // Send ROI accrual email outside transaction to avoid rollback
+             // Send ROI accrual email outside transaction to avoid rollback
               try {
+                const userEmail = investment.user?.email;
+                if (!userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+                  logger.error(`Invalid or missing email for investment ${investment.id}: ${userEmail}`);
+                  return;
+                }
+                logger.debug('Investment data before email:', {
+                  id: investment.id,
+                  email: userEmail,
+                  transactionId: investment.transaction_id
+                });
                 await EmailTemplate.roiAccrualEmail({
-                  email: investment.user.email,
-                  planName: investment.investmentPlan.name,
+                  email: userEmail,
+                  planName: investment.investmentPlan?.name || 'Unknown Plan',
                   roiAmount: roiAmountNum,
                   date: todayStart,
-                  investmentId: investment.transaction_id,
+                  transactionId: investment.transaction_id
                 });
+                logger.info(`ROI email sent for investment ${investment.id}`);
               } catch (emailError) {
                 logger.error(`Failed to send daily ROI email for investment ${investment.id}:`, emailError);
               }
-
               result.processed++;
             } else {
               logger.debug(`⏭️ Skipping investment ${investment.id}: Already accrued for today`);
