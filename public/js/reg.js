@@ -11,7 +11,7 @@
         const lastUpdatedElement = document.getElementById('last-updated');
         const marketDataElement = document.getElementById('market-data');
         const historyBodyElement = document.getElementById('history-body');
-        
+
         // State
         let exchangeRates = {};
         let conversionHistory = [];

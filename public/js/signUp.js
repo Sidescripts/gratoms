@@ -113,7 +113,7 @@ async function handleSignup(event) {
             localStorage.setItem('username', data.user.username);
             Modal.success('success', 'Account created successfully! Redirecting to dashboard...');
             setTimeout(() =>{
-                window.location.href = "../gratoms-Dashboard/Dashboard.html"
+                window.location.href = "../gratoms-dashboard/Dashboard.html"
             }, 2000)
         }else{
             // Enhanced error handling

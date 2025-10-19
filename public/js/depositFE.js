@@ -180,7 +180,7 @@ function openPaymentModal() {
   modalElement.addEventListener(
     'hidden.bs.modal',
     () => {
-      window.location.href = '../gratoms-Dashboard/Dashboard.html';
+      window.location.href = '../gratoms-dashboard/Dashboard.html';
     },
     { once: true }
   );

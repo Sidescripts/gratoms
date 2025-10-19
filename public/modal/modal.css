@@ -46,13 +46,13 @@
 } */
 
 .modal {
-    background: linear-gradient(135deg, #24243a 0%, #2c2c4c 100%);
+    background: linear-gradient(135deg, #4a4a4a 0%, #000000 100%);
     width: 100%;
     max-width: 320px;
     height: 300px !important;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     position: fixed !important;
