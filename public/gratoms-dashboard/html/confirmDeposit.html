@@ -102,249 +102,261 @@
             margin: 6vh auto 0;
         }
 
+        #walletAddress {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        /* Form-specific enhancements - won't affect other elements */
+        .card-style .content {
+            padding: 20px;
+        }
+
+        .card-style .table {
+            margin-bottom: 25px;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        /* Light Mode Rows */
+        .card-style .table tr {
+            /* background-color: #f9fafb;  */
+            border-radius: 12px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Rows */
+        body.theme-dark .card-style .table tr {
+            /* background-color: #2b3b55; */
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Hover Effect (both modes) */
+        .card-style .table tr:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+        }
+
+
+        .card-style .table th,
+        .card-style .table td {
+            padding: 15px 12px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .card-style .table th {
+            font-weight: 600;
+            width: 40%;
+            padding-left: 20px;
+        }
+
+        .card-style .table td {
+            font-weight: 500;
+            padding-right: 20px;
+        }
+
+        /* Wallet address section improvements */
+        #walletAddress {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.theme-dark #walletAddress {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .copy-btn {
+            background: #F6BB42;
+            color: #000;
+            border-radius: 6px;
+            padding: 6px 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .copy-btn:hover {
+            background: #FFCE54;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Payment instructions */
+        #paymentInstruction {
+            background: rgba(246, 187, 66, 0.1);
+            border-left: 4px solid #F6BB42;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+
+        .instru-address {
+            font-size: 10px;
+        }
+
+        /* Confirm button enhancements */
+        .card-style .btn-warning {
+            background: #F6BB42;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(246, 187, 66, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .card-style .btn-warning:hover {
+            background: #FFCE54;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(246, 187, 66, 0.45);
+        }
+
+        /* Modal enhancements */
+        #paymentModal .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        #paymentModal .modal-header {
+            border-bottom: 1px solid rgba(246, 187, 66, 0.2);
+            padding: 20px 25px 10px;
+        }
+
+        #paymentModal .modal-body {
+            padding: 25px;
+        }
+
+        #paymentModal .spinner-border {
+            width: 2.5rem;
+            height: 2.5rem;
+            color: #F6BB42;
+        }
+
+        #paymentModal .btn-secondary {
+            /* background: #6c757d; */
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            transition: all 0.2s ease;
+        }
+
+        #paymentModal .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
+
+            .card-style .table th,
+            .card-style .table td {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+
+            .card-style .table th {
+                padding-left: 15px;
+                width: 45%;
+            }
+
+            .card-style .table td {
+                padding-right: 15px;
+            }
+
+            #walletAddress {
+                max-width: 120px;
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .copy-btn {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            .card-style .btn-warning {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+
+            /* Add safe space for footer */
+            .card-style {
+                margin-bottom: 80px;
+                /* or the height of your footer */
+                max-height: calc(100vh - 100px);
+                /* keeps it within screen */
+                overflow-y: auto;
+            }
+
             #paymentModal .modal-dialog {
                 margin: -170px auto 0;
             }
         }
 
-        #walletAddress {
-        display: inline-block;
-        white-space: nowrap;
-        }
+        @media (max-width: 576px) {
+            .card-style .content {
+                padding: 5px;
+            }
 
-    /* Form-specific enhancements - won't affect other elements */
-    .card-style .content {
-        padding: 20px;
-    }
-    
-    .card-style .table {
-        margin-bottom: 25px;
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 8px;
-    }
-    
-    /* Light Mode Rows */
-    .card-style .table tr {
-    /* background-color: #f9fafb;  */
-    border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    }
+            .card-style .table {
+                border-spacing: 0 6px;
+            }
 
-    /* Dark Mode Rows */
-    body.theme-dark .card-style .table tr {
-    /* background-color: #2b3b55; */
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    }
+            .card-style .table th,
+            .card-style .table td {
+                padding: 10px 6px;
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
 
-    /* Hover Effect (both modes) */
-    .card-style .table tr:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-    }
+            .card-style .table th {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                /* background-color: #2b3b55; */
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
 
-        
-    .card-style .table th,
-    .card-style .table td {
-        padding: 15px 12px;
-        vertical-align: middle;
-        border: none;
-    }
-    
-    .card-style .table th {
-        font-weight: 600;
-        width: 40%;
-        padding-left: 20px;
-    }
-    
-    .card-style .table td {
-        font-weight: 500;
-        padding-right: 20px;
-    }
-    
-    /* Wallet address section improvements */
-    #walletAddress {
-        font-family: 'Courier New', monospace;
-        background: rgba(0, 0, 0, 0.05);
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    body.theme-dark #walletAddress {
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .copy-btn {
-        background: #F6BB42;
-        color: #000;
-        border-radius: 6px;
-        padding: 6px 12px;
-        border: none;
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    }
-    
-    .copy-btn:hover {
-        background: #FFCE54;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Payment instructions */
-    #paymentInstruction {
-        background: rgba(246, 187, 66, 0.1);
-        border-left: 4px solid #F6BB42;
-        border-radius: 4px;
-        padding: 15px;
-        margin: 20px 0;
-        font-size: 0.9rem;
-    }
-    
-    /* Confirm button enhancements */
-    .card-style .btn-warning {
-        background: #F6BB42;
-        border: none;
-        border-radius: 10px;
-        padding: 12px 30px;
-        font-weight: 600;
-        font-size: 1rem;
-        box-shadow: 0 4px 10px rgba(246, 187, 66, 0.35);
-        transition: all 0.3s ease;
-    }
-    
-    .card-style .btn-warning:hover {
-        background: #FFCE54;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(246, 187, 66, 0.45);
-    }
-    
-    /* Modal enhancements */
-    #paymentModal .modal-content {
-        border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        transition: all 0.3s ease-in-out;
-        overflow: hidden;
-    }
-    
-    #paymentModal .modal-header {
-        border-bottom: 1px solid rgba(246, 187, 66, 0.2);
-        padding: 20px 25px 10px;
-    }
-    
-    #paymentModal .modal-body {
-        padding: 25px;
-    }
-    
-    #paymentModal .spinner-border {
-        width: 2.5rem;
-        height: 2.5rem;
-        color: #F6BB42;
-    }
-    
-    #paymentModal .btn-secondary {
-        /* background: #6c757d; */
-        border: none;
-        border-radius: 8px;
-        padding: 8px 20px;
-        transition: all 0.2s ease;
-    }
-    
-    #paymentModal .btn-secondary:hover {
-        background: #5a6268;
-        transform: translateY(-1px);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .card-style .table th,
-        .card-style .table td {
-            padding: 12px 8px;
-            font-size: 0.9rem;
+            .card-style .table td {
+                padding: 5px 10px;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                border: 1px solid #2b3b55;
+                /* background-color: rgba(246, 187, 66, 0.15); */
+            }
+
+            #walletAddress {
+                max-width: 250px;
+                margin: 0 auto;
+                display: block;
+            }
+
+            .copy-btn {
+                margin-top: 8px;
+                max-width: 150px;
+                margin-top: -2px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 8px 10px;
+            }
         }
-        
-        .card-style .table th {
-            padding-left: 15px;
-            width: 45%;
-        }
-        
-        .card-style .table td {
-            padding-right: 15px;
-        }
-        
-        #walletAddress {
-            max-width: 120px;
-            font-size: 0.8rem;
-            padding: 6px 10px;
-        }
-        
-        .copy-btn {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-        
-        .card-style .btn-warning {
-            padding: 10px 20px;
-            font-size: 0.95rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .card-style .content {
-            padding: 5px;
-        }
-        
-        .card-style .table {
-            border-spacing: 0 6px;
-        }
-        
-        .card-style .table th,
-        .card-style .table td {
-            padding: 10px 6px;
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .card-style .table th {
-            padding-top: 15px;
-            padding-bottom: 5px;
-            /* background-color: #2b3b55; */
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-        
-        .card-style .table td {
-            padding: 10px 10px;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            border: 1px solid #2b3b55;
-            /* background-color: rgba(246, 187, 66, 0.15); */
-        }
-        
-        #walletAddress {
-            max-width: 250px;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .copy-btn {
-            margin-top: 8px;
-            max-width: 150px;
-            margin-top: -2px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 8px 10px;
-        }
-    }
-            </style>
+    </style>
 </head>
 
 <body class="theme-light">
