@@ -46,7 +46,7 @@
 } */
 
 .modal {
-    background: linear-gradient(135deg, #4a4a4a 0%, #000000 100%);
+    background: linear-gradient(135deg, #000000  0%, #000000 100%);
     width: 100%;
     max-width: 320px;
     height: 300px !important;
@@ -199,12 +199,12 @@
 }
 
 .modal-btn-primary {
-    background: #7e5bef;
+    background: #ffa502;
     color: white;
 }
 
 .modal-btn-primary:hover {
-    background: #8d6eff;
+    background: #e09303;
 }
 
 .modal-btn-secondary {
