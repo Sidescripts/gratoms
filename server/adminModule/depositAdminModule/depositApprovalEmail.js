@@ -147,7 +147,7 @@ function EmailTemplates() {
                     </tr>
                     <tr>
                         <td class="label">Amount Credited:</td>
-                        <td class="value"><strong>${Number(amount).toFixed(2)} ${asset.toUpperCase()}</strong></td>
+                        <td class="value"><strong>${Number(amount).toFixed(2)} USD</strong></td>
                     </tr>
                     <tr>
                         <td class="label">Approval Date:</td>
