@@ -23,6 +23,13 @@ module.exports = (sequelize) => {
         min: 0.00000001
       }
     },
+    asset: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      validate: {
+        isIn: [['BTC', 'ETH', 'USDT', 'LTC', 'BCH', 'BNB', 'DOGE', 'DASH']]
+      }
+    },
     expected_roi: {
       type: DataTypes.DECIMAL(20, 8),
       allowNull: false,

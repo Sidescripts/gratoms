@@ -17,7 +17,8 @@ function InvestmentController() {
           });
         }
 
-        const { paymentMethod, amount, name, id } = req.body;
+        const { asset, amount, name, id } = req.body;
+        console.log(req.body)
         const userId = req.user.id;
 
         // Check for existing active investment
@@ -45,7 +46,7 @@ function InvestmentController() {
         }
 
         // Validate required fields
-        if (!amount || !name || !id) {
+        if (!amount || !name || !id || !asset) {
           return res.status(400).json({
             success: false,
             error: 'All values are required'
@@ -106,14 +107,14 @@ function InvestmentController() {
 
         // Validate balance based on payment method
         let sufficientBalance = false;
-        switch (paymentMethod) {
-          case 'btc':
+        switch (asset) {
+          case 'BTC':
             sufficientBalance = user.btcBal >= amount;
             break;
-          case 'eth':
+          case 'ETH':
             sufficientBalance = user.ethBal >= amount;
             break;
-          case 'usdt':
+          case 'USDT':
             sufficientBalance = user.usdtBal >= amount;
             break;
           default:
@@ -126,7 +127,7 @@ function InvestmentController() {
         if (!sufficientBalance) {
           return res.status(400).json({ 
             success: false,
-            error: `Insufficient ${paymentMethod.toUpperCase()} balance` 
+            error: `Insufficient ${asset.toUpperCase()} balance` 
           });
         }
 
@@ -148,6 +149,7 @@ function InvestmentController() {
 
         const investment = await Investment.create({
           amount,
+          asset,
           expected_roi: expectedROI,
           status: 'active',
           start_date: startDate,
@@ -159,8 +161,8 @@ function InvestmentController() {
         });
 
         // Update user wallet balance based on payment method
-        switch (paymentMethod) {
-          case 'btc':
+        switch (asset) {
+          case 'BTC':
             await User.update({
               btcBal: user.btcBal - amount,
               walletBalance: user.walletBalance - amount,
@@ -168,20 +170,20 @@ function InvestmentController() {
               // totalRevenue: user.totalRevenue + amount
             }, { where: { id: userId } });
             break;
-          case 'eth':
+          case 'ETH':
             await User.update({
                 walletBalance: user.walletBalance - amount,
                 ethBal: user.ethBal - amount,
                 totalRevenue: parseFloat(user.totalRevenue) + parseFloat(amount)
-              // totalRevenue: user.totalRevenue + amount
+              
             }, { where: { id: userId } });
             break;
-          case 'usdt':
+          case 'USDT':
             await User.update({
               usdtBal: user.usdtBal - amount,
               walletBalance: user.walletBalance - amount,
               totalRevenue: parseFloat(user.totalRevenue) + parseFloat(amount)
-              // totalRevenue: user.totalRevenue + amount
+              
             }, { where: { id: userId } });
             break;
         }

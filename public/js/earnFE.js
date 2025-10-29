@@ -101,34 +101,11 @@
         });
         console.log('Populated modal dropdowns');
       }
-    
-
-      // Fetch balance (placeholder, replace with actual API)
-      // async function fetchBalance() {
-      //   console.log('Fetching user balance...');
-      //   try {
-      //     // Replace with actual balance API
-      //     const response = await fetch(`${API_BASE_URL}/user/balance`);
-      //     if (!response.ok) {
-      //       console.error(`Balance API failed with status: ${response.status}`);
-      //       throw new Error('Failed to fetch balance');
-      //     }
-      //     const data = await response.json();
-      //     console.log(`Fetched balance: $${data.balance}`);
-      //     return data.balance;
-      //   } catch (error) {
-      //     console.error(`Error fetching balance: ${error.message}`);
-      //     return 0;
-      //   }
-      // }
-
       // Initialize page
       document.addEventListener('DOMContentLoaded', async () => {
         console.log('Page loaded, initializing...');
         const plans = await fetchPlans();
         renderPlans(plans);
 
-        // const balance = await fetchBalance();
-        // document.getElementById('availableBalance').textContent = `$${balance}`;
-        // console.log('Page initialization complete');
+        
       });

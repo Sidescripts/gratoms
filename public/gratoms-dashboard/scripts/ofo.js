@@ -242,11 +242,12 @@ document.addEventListener('DOMContentLoaded', function(){
         try {
             // Use the plan ID instead of name for the API call
             const payload = {
-                paymentMethod: paymentMethod, 
+                asset: paymentMethod.toUpperCase(), 
                 amount: parseFloat(amount),  
                 id: revenuePlanId, // Use plan ID instead of name
                 name: revenuePlanName
             }
+            console.log(payload)
             
             const token = localStorage.getItem('token');
             

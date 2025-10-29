@@ -4,10 +4,10 @@
 
     // Helper to format date
     function formatDate(dateString) {
-      console.log(`Formatting date: ${dateString}`);
+      // console.log(`Formatting date: ${dateString}`);
       const date = new Date(dateString);
       const formatted = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-      console.log(`Formatted date: ${formatted}`);
+      // console.log(`Formatted date: ${formatted}`);
       return formatted;
     }
 
@@ -17,13 +17,13 @@
       if (type === 'deposit') return 'transaction-deposit';
       if (type === 'withdrawal') return 'transaction-withdrawal';
       if (type === 'investment') return 'transaction-investment';
-      console.log(`No class found for type: ${type}`);
+      // console.log(`No class found for type: ${type}`);
       return '';
     }
 
     // Helper to get amount class and prefix
     function getAmountClassAndPrefix(type, amount) {
-      console.log(`Getting amount class for type: ${type}, amount: ${amount}`);
+      // console.log(`Getting amount class for type: ${type}, amount: ${amount}`);
       if (type === 'deposit' || type === 'investment') {
         return { class: 'amount-positive', prefix: '+ ' };
       } else if (type === 'withdrawal') {
@@ -35,7 +35,7 @@
 
     // Helper to get status class
     function getStatusClass(status) {
-      console.log(`Getting status class for: ${status}`);
+      // console.log(`Getting status class for: ${status}`);
       if (status === 'completed') return 'status-completed';
       if (status === 'pending') return 'status-pending';
       if (status === 'cancelled') return 'status-cancelled';
@@ -61,7 +61,7 @@
     // Fetch all transactions
 
 async function fetchTransactions() {
-    console.log('Fetching transactions...');
+    // console.log('Fetching transactions...');
     const token = localStorage.getItem('token');
     try {
       const [depositsRes, withdrawalsRes, investmentsRes] = await Promise.all([
@@ -98,7 +98,7 @@ async function fetchTransactions() {
         
       ]);
 
-       if (depositsRes.status == 401 && withdrawalsRes == 401 && investmentsRes == 401)  {
+       if (depositsRes.status === 401 && withdrawalsRes === 401 && investmentsRes === 401)  {
         setTimeout(() => {
           window.location.href ="../pages/login.html"
         }, 1500);
@@ -135,9 +135,9 @@ async function fetchTransactions() {
 
       // console.log(`Fetched ${deposits.data.length} deposits, ${withdrawals.data.length} withdrawals, ${investments.data.length} investments`);
       
-      console.log(deposits.deposits);
-      console.log(withdrawals.withdrawals);
-      console.log(investments.investments);
+      // console.log(deposits.deposits);
+      // console.log(withdrawals.withdrawals);
+      // console.log(investments.investments);
 
 
       const allTransactions = [
