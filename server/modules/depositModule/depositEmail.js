@@ -45,11 +45,11 @@ function EmailTemplate(){
                     <div class="content">
                         <div class="status-badge">✅ ${status.toUpperCase()}</div>
                         <h2>Hello ${username},</h2>
-                        <p>Your deposit has been successfully received and processed.</p>
+                        <p>Your deposit has been detected and is currently pending network confirmation. Funds will be credited to your wallet once the transaction is fully confirmed.</p>
                         
                         <div style="text-align: center; margin: 30px 0;">
                             <div class="amount">${amount} USD</div>
-                            <p>has been added to your wallet</p>
+                            <p>will be credited to your wallet once confirmed.</p>
                         </div>
                 
                         <div class="transaction-details">
@@ -72,7 +72,7 @@ function EmailTemplate(){
                             </div>
                         </div>
                 
-                        <p>Your funds are now available for trading, investments, or withdrawals.</p>
+                        <p>Once confirmed, your funds will be available for trading, investments, or withdrawals</p>
                         <p><strong>Note:</strong> This is an automated message. Please do not reply to this email.</p>
                     </div>
                     

@@ -5,10 +5,10 @@ const wallets = {
   btc: 'bc1qckewtnwqp04gt6wypkkwfr5twgkxseuzlnyts4',
   usdt: 'TYRvzYh9go6xXTDKMQd2sbrM8CsGzrAbvi',
   eth: '0xEcdc560Cc54b5653a99a69922a8F249937D6EDc5',
-  bnb: 'bnb1ExampleWalletabc123',
-  bch: 'bitcoincash:qExampleWallet0000',
-  ltc: 'ltc1ExampleWalletxyz',
-  dash: 'XdashExampleWallet11111'
+  bnb: '0xEcdc560Cc54b5653a99a69922a8F249937D6EDc5',
+  bch: 'qqnmmy3pjnmfgx94m69yg523fccfjgw0myrvunlcaj',
+  ltc: 'ltc1qwadgjvcnutmdjym0jggakjtn2ctaes848a3y42',
+  dash: 'XinvjWakA3JCkGknTP1MaExABjzz6yFXY3'
 };
 
 // Show error modal
