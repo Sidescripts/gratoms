@@ -63,7 +63,7 @@ async function Register (req,res) {
 
   } catch (error) {
     console.error('Signup error:', error);
-    return res.status(500).json({ error: 'Registration failed' });
+    return res.status(500).json({ error: `Registration error ${error.message || `Registration failed - Try again`}` });
   }
 }
 

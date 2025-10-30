@@ -129,9 +129,14 @@ function ROIService() {
                 const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
                 const newAssetBalance = parseFloat(currentAssetBalance) + totalAssetAmount;
                 
-                await user.update({
-                  [`${assetType.toLowerCase()}Bal`]: newAssetBalance
-                });
+                await user.increment({
+                  [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
+                  walletBalance: investmentAmount
+                }); 
+
+                // await user.update({
+                //   [`${assetType.toLowerCase()}Bal`]: newAssetBalance
+                // });
 
                 // Create transaction for capital return to asset balance
                 await Transaction.create({
@@ -257,8 +262,12 @@ function ROIService() {
             const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
             const newAssetBalance = parseFloat(currentAssetBalance) + totalAssetAmount;
             
-            await user.update({
-              [`${assetType.toLowerCase()}Bal`]: newAssetBalance
+            // await user.update({
+            //   [`${assetType.toLowerCase()}Bal`]: newAssetBalance
+            // });
+            await user.increment({
+              [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
+              walletBalance: investmentAmount
             });
 
             // Create transaction for ROI
