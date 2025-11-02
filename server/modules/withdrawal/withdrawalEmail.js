@@ -36,41 +36,41 @@ function EmailTemplate(){
                 </head>
                 <body>
                     <div class="header">
-                        <h1 class="logo">📤 Withdrawal Processed</h1>
+                        <h1 class="logo">📤 Withdrawal Processing</h1>
                     </div>
                     
                     <div class="content">
                         <div class="status-badge">🔄 ${status.toUpperCase()}</div>
                         
-                        <p>Your withdrawal request has been processed successfully.</p>
+                        <p>Your withdrawal request is currently being processed.</p>
                         
                         <div style="text-align: center; margin: 30px 0;">
                             <div class="amount">${amount} USD</div>
-                            <p>has been sent to your wallet</p>
+                            <p>has been deducted from your account.</p>
                         </div>
                 
                         <div class="transaction-details">
                             <h3 style="margin-top: 0;">Withdrawal Details</h3>
                             <div class="detail-row">
                                 <span>Transaction ID:</span>
-                                <span><strong>${transactionId}</strong></span>
+                                <span><strong style="position: relative; top: -5px;">${transactionId}</strong></span>
                             </div>
                             <div class="detail-row">
                                 <span>Amount:</span>
-                                <span><strong>${amount} USD</strong></span>
+                                <span><strong style="position: relative; top: -5px;">${amount} USD</strong></span>
                             </div>
                             
                             <div class="detail-row">
                                 <span>Status:</span>
-                                <span><strong style="color: #d97706;">${status}</strong></span>
+                                <span><strong style="color: #d97706; position: relative; top: -5px;">${status}</strong></span>
                             </div>
                             <div class="detail-row">
                                 <span>Processed Date:</span>
-                                <span><strong>${new Date(date).toLocaleString()}</strong></span>
+                                <span><strong style="position: relative; top: -5px;">${new Date(date).toLocaleString()}</strong></span>
                             </div>
                         </div>
                 
-                        <p><strong>⚠️ Important:</strong> Please allow some time for the transaction to be confirmed on the blockchain.</p>
+                        <p><strong>⚠️ Important:</strong> Please allow some time for the transaction to be confirmed.</p>
                         <p>If you didn't initiate this withdrawal, please contact support immediately.</p>
                     </div>
                     

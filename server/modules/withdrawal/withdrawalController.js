@@ -158,7 +158,8 @@ const userWithdrawalController = {
                     amount: withdrawal.amount,
                     asset: withdrawal.asset,
                     transactionId: withdrawal.transaction_id,
-                    status: withdrawal.status
+                    status: withdrawal.status,
+                    date: withdrawal.createdAt
                 });
             } catch (emailError) {
                 // Log email error but don't fail the transaction
