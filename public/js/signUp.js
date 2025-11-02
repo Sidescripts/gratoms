@@ -48,7 +48,7 @@ function validateForm(formData) {
     // Password validation
     if (!formData.password) {
         errors.push('Password is required');
-    } else if (formData.password.length < 6) {
+    } else if (formData.password.length < 8) {
         errors.push('Password must be at least 6 characters long');
     }
     
@@ -108,6 +108,7 @@ async function handleSignup(event) {
         submitButton.textContent = 'Sign Up';
         
         if(response.ok){
+            localStorage.removeItem('token',data.token )
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.user.email);
             localStorage.setItem('username', data.user.username);

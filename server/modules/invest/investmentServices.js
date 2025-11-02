@@ -129,8 +129,17 @@ function ROIService() {
                 const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
                 const newAssetBalance = parseFloat(currentAssetBalance) + totalAssetAmount;
                 
-                await user.update({
-                  [`${assetType.toLowerCase()}Bal`]: newAssetBalance
+                await user.increment({
+                  [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
+                  walletBalance: investmentAmount
+                }); 
+
+                
+                // Mark investment as completed
+                await investment.update({
+                  status: 'completed',
+                  actual_roi: totalROI,
+                  payout_date: endDate
                 });
 
                 // Create transaction for capital return to asset balance
@@ -142,13 +151,6 @@ function ROIService() {
                   description: `Capital return + total ROI credited to ${assetType} balance for ${investment.investmentPlan.name} investment`,
                   transactionId: `txn_${uuidv4()}`,
                   asset: assetType
-                });
-
-                // Mark investment as completed
-                await investment.update({
-                  status: 'completed',
-                  actual_roi: totalROI,
-                  payout_date: endDate
                 });
 
                 logger.info(`✅ Completed investment ${investment.id} on last day, credited ${totalAssetAmount} ${assetType} (capital: ${investmentAmount} + ROI: ${totalRevenue}) to asset balance`);
@@ -257,30 +259,12 @@ function ROIService() {
             const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
             const newAssetBalance = parseFloat(currentAssetBalance) + totalAssetAmount;
             
-            await user.update({
-              [`${assetType.toLowerCase()}Bal`]: newAssetBalance
-            });
-
-            // Create transaction for ROI
-            await Transaction.create({
-              userId: investment.user.id,
-              investmentId: investment.id,
-              amount: roiAmountNum,
-              type: 'ROI Credit',
-              description: `Overdue ROI for ${investment.investmentPlan.name} investment in ${assetType}`,
-              transactionId: `txn_${uuidv4()}`,
-              asset: assetType
-            });
-
-            // Create transaction for asset balance credit
-            await Transaction.create({
-              userId: investment.user.id,
-              investmentId: investment.id,
-              amount: totalAssetAmount,
-              type: 'Asset Balance Credit',
-              description: `Capital return + total ROI credited to ${assetType} balance for overdue ${investment.investmentPlan.name} investment`,
-              transactionId: `txn_${uuidv4()}`,
-              asset: assetType
+            // await user.update({
+            //   [`${assetType.toLowerCase()}Bal`]: newAssetBalance
+            // });
+            await user.increment({
+              [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
+              walletBalance: investmentAmount
             });
 
             // Mark investment as completed
