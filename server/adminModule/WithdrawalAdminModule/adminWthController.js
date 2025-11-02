@@ -56,21 +56,19 @@ const adminWithdrawalController = {
 
     // Approve, complete, or reject a withdrawal
     updateWithdrawalStatus: async (req, res) => {
-        const transaction = await sequelize.transaction();
-        
         try {
+            console.log("withdrawal")
             const validationError = handleValidationErrors(req);
             if (validationError) {
-                await transaction.rollback();
                 return validationError;
             }
 
-            const { id } = req.params;
-            const { status, adminNotes } = req.body; // status: 'confirmed', 'completed', 'failed', 'rejected'
-
+            const { withdrawalId } = req.params;
+            const { status} = req.body; // status: 'confirmed', 'completed', 'failed', 'rejected'
+            console.log(withdrawalId)
             // Validate required fields
             if (!status) {
-                await transaction.rollback();
+                
                 return res.status(400).json({
                     success: false,
                     message: 'Status is required',
@@ -80,7 +78,7 @@ const adminWithdrawalController = {
             // Validate status value
             const validStatuses = ['confirmed', 'completed', 'failed', 'rejected'];
             if (!validStatuses.includes(status)) {
-                await transaction.rollback();
+                
                 return res.status(400).json({
                     success: false,
                     message: `Invalid status. Must be one of: ${validStatuses.join(', ')}`,
@@ -88,28 +86,27 @@ const adminWithdrawalController = {
             }
 
             // Find withdrawal with user data
-            const withdrawal = await Withdrawal.findByPk(id, {
+            const withdrawal = await Withdrawal.findByPk(withdrawalId, {
                 include: [
                     {
                         model: User,
                         as: 'user',
-                        attributes: ['id', 'email', 'username'],
+                        attributes: ['id', 'email', 'username', 'walletBalance'],
                     },
                 ],
-                transaction
             });
-
+            console.log(withdrawal)
             if (!withdrawal) {
-                await transaction.rollback();
+                
                 return res.status(404).json({
                     success: false,
                     message: 'Withdrawal not found',
                 });
             }
-
+            // console.log(withdrawal.user.walletBalance)
             // Validate withdrawal can be updated
             if (withdrawal.status !== 'pending' && withdrawal.status !== 'confirmed') {
-                await transaction.rollback();
+                
                 return res.status(400).json({
                     success: false,
                     message: `Withdrawal cannot be updated from ${withdrawal.status} status`,
@@ -119,13 +116,8 @@ const adminWithdrawalController = {
             // Handle status-specific logic
             const updateData = {
                 status: status,
-                processed_at: new Date(),
-                processed_by: req.user.id, // Track which admin processed this
+                processed_at: new Date()
             };
-
-            if (adminNotes) {
-                updateData.admin_notes = adminNotes;
-            }
 
             // Set completed_at for completed withdrawals
             if (status === 'completed') {
@@ -135,13 +127,14 @@ const adminWithdrawalController = {
             // For failed/rejected withdrawals, refund the amount to user's wallet
             if (status === 'failed' || status === 'rejected') {
                 await User.update(
-                    { walletBalance: sequelize.literal(`"walletBalance" + ${withdrawal.amount}`) },
-                    { where: { id: withdrawal.userId }, transaction }
+                    { walletBalance: parseFloat(withdrawal.user.walletBalance) + parseFloat(withdrawal.amount) },
+
+                    // { walletBalance: sequelize.literal(`"walletBalance" + ${withdrawal.amount}`) },
+                    { where: { id: withdrawal.userId }}
                 );
             }
 
-            await withdrawal.update(updateData, { transaction });
-            await transaction.commit();
+            await withdrawal.update(updateData);
 
             // Send notification email (non-blocking)
             try {
@@ -158,7 +151,6 @@ const adminWithdrawalController = {
             });
 
         } catch (error) {
-            await transaction.rollback();
             console.error('Update withdrawal status error:', error);
             return sendErrorResponse(res, 500, 'Failed to update withdrawal status', error);
         }

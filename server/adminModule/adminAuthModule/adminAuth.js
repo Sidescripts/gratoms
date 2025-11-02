@@ -78,14 +78,14 @@ function AdminAuthController() {
         }
 
         const { email, username,password } = req.body;
-        console.log(email, password)
+        console.log(req.body)
         // Find admin
         const admin = await Admin.findOne({
-          // where: { email }
-          [Op.or]: [{ username }, { email }]
+          where: { email }
+          // [Op.or]: [{ username }, { email }]
 
         });
-
+        console.log(admin)
         if (!admin) {
           return res.status(401).json({ error: 'Invalid credentials' });
         }

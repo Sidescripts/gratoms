@@ -49,7 +49,7 @@ const userWithdrawalController = {
     
             // Retrieve user with necessary attributes
             const user = await User.findByPk(userId, {
-                attributes: ['id', 'walletBalance', 'totalRevenue', 'isVerified', 'email']
+                attributes: ['id', 'walletBalance', 'totalRevenue', "totalWithdrawal",'isVerified', 'email', 'btcBal', 'ethBal', 'usdtBal']
             });
     
             if (!user) {
@@ -60,13 +60,13 @@ const userWithdrawalController = {
                 });
             }
             
-            const {walletBalance, totalRevenue, email, totalWithdrawal } = user;
-    
+            const {walletBalance, btcBal, email } = user;
+            
             // Business rule validation
-            if (amount < 400) {
+            if (amount < 200) {
                 return res.status(400).json({
                     success: false,
-                    error: "Minimum withdrawal is $400"
+                    error: "Minimum withdrawal is $200"
                 });
             }
             
@@ -81,6 +81,36 @@ const userWithdrawalController = {
             const timestamp = now.toISOString().replace(/[-:T.]/g, '').slice(0, 14); // YYYYMMDDHHMMSS
             const random = Math.floor(10000 + Math.random() * 90000); // 5-digit random    
             
+            // Validate balance based on payment method
+            let sufficientBalance = false;
+            switch (withdrawalMethod) {
+            case 'BTC':
+                console.log(user.btcBal)
+               
+                sufficientBalance = user.btcBal >= amount;
+                break;
+            case 'ETH':
+                console.log(user.ethBal)
+
+                sufficientBalance = user.ethBal >= amount;
+                break;
+            case 'USDT':
+                sufficientBalance = user.usdtBal >= amount;
+                break;
+            default:
+                return res.status(400).json({ 
+                success: false,
+                error: 'Invalid payment method' 
+                });
+            }
+
+            if (!sufficientBalance) {
+            return res.status(400).json({ 
+                success: false,
+                error: `Insufficient ${withdrawalMethod.toUpperCase()} balance` 
+            });
+            }
+
             // Create withdrawal record
             const withdrawal = await Withdrawal.create({
                 id: uuidv4(),
@@ -93,16 +123,33 @@ const userWithdrawalController = {
                 createdAt: new Date(),
             });
     
-            // Update user wallet balance
-            await User.update(
-                { 
-                    walletBalance: walletBalance - amount, 
-                    totalWithdrawal: (totalWithdrawal || 0) + amount
-                },
-                { where: { id: userId } }
-            );
-
-           
+                // Update user wallet balance based on payment method
+        switch (withdrawalMethod) {
+            case 'BTC':
+                await User.update({
+                btcBal: user.btcBal - amount,
+                walletBalance: user.walletBalance - amount,
+                totalWithdrawal: parseFloat(user.totalWithdrawal) + parseFloat(amount)
+                
+                }, { where: { id: userId } });
+                break;
+            case 'ETH':
+                await User.update({
+                    walletBalance: user.walletBalance - amount,
+                    ethBal: user.ethBal - amount,
+                    totalWithdrawal: parseFloat(user.totalWithdrawal) + parseFloat(amount)
+                
+                }, { where: { id: userId } });
+                break;
+            case 'USDT':
+                await User.update({
+                usdtBal: user.usdtBal - amount,
+                walletBalance: user.walletBalance - amount,
+                totalWithdrawal: parseFloat(user.totalWithdrawal) + parseFloat(amount)
+                
+                }, { where: { id: userId } });
+                break;
+        }
     
             // Send notification email
             try {

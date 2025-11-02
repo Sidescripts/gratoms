@@ -1,11 +1,10 @@
+// const { set } = require("../../../server/utils/nodemailer");
 
 // API Configuration
 const API_BASE_URL = '/api/v1';
-const WS_URL = 'ws://localhost:2000'; // Adjust based on your WebSocket setup
 let currentWithdrawalId = null;
 let currentUserId = null;
 let currentAction = null;
-let ws = null;
 
 // DOM Elements
 const pendingWithdrawalsBody = document.getElementById('pending-withdrawals-body');
@@ -17,53 +16,16 @@ const processedEmpty = document.getElementById('processed-empty');
 const pendingCount = document.getElementById('pending-count');
 const processedCount = document.getElementById('processed-count');
 
-// Get auth token (assuming set elsewhere)
-const authToken = localStorage.getItem('token'); // Replace with actual token source
+// Get auth token
+const authToken = localStorage.getItem('token') || 'your-auth-token-here';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    // Setup event listeners
+    console.log('Admin withdrawal page initialized');
     setupEventListeners();
-    
-    // Load withdrawal data
     loadWithdrawalData();
-
-    // Initialize WebSocket for real-time updates
-    initializeWebSocket();
-    
-    // Fallback polling every 30 seconds
-    setInterval(loadWithdrawalData, 30000);
+    setInterval(loadWithdrawalData, 70000);
 });
-
-// Initialize WebSocket connection
-// function initializeWebSocket() {
-//     try {
-//         ws = new WebSocket(WS_URL);
-
-//         ws.onopen = () => {
-//             console.log('WebSocket connected');
-//             ws.send(JSON.stringify({ type: 'subscribe', channel: 'withdrawals' }));
-//         };
-
-//         ws.onmessage = (event) => {
-//             const data = JSON.parse(event.data);
-//             if (data.type === 'withdrawalUpdate') {
-//                 loadWithdrawalData(); // Refresh data on new withdrawal event
-//             }
-//         };
-
-//         ws.onclose = () => {
-//             console.log('WebSocket disconnected, attempting to reconnect...');
-//             setTimeout(initializeWebSocket, 5000); // Attempt reconnect after 5 seconds
-//         };
-
-//         ws.onerror = (error) => {
-//             console.error('WebSocket error:', error);
-//         };
-//     } catch (error) {
-//         console.error('Failed to initialize WebSocket:', error);
-//     }
-// }
 
 // Setup all event listeners
 function setupEventListeners() {
@@ -104,16 +66,20 @@ function setupEventListeners() {
         });
     });
 
-    // Edit Withdrawal Modal Functionality
+    // Edit Withdrawal Modal
     const withdrawalModal = document.getElementById('editWithdrawalModal');
     const closeWithdrawalModal = document.getElementById('closeWithdrawalModal');
 
     function closeWithdrawalModalFunc() {
-        withdrawalModal.classList.remove('active');
-        document.getElementById('addBalanceForm').reset();
-        document.getElementById('subtractBalanceForm').reset();
-        document.getElementById('addBalanceError').style.display = 'none';
-        document.getElementById('subtractBalanceError').style.display = 'none';
+        if (withdrawalModal) withdrawalModal.classList.remove('active');
+        const addBalanceForm = document.getElementById('addBalanceForm');
+        const subtractBalanceForm = document.getElementById('subtractBalanceForm');
+        if (addBalanceForm) addBalanceForm.reset();
+        if (subtractBalanceForm) subtractBalanceForm.reset();
+        const addBalanceError = document.getElementById('addBalanceError');
+        const subtractBalanceError = document.getElementById('subtractBalanceError');
+        if (addBalanceError) addBalanceError.style.display = 'none';
+        if (subtractBalanceError) subtractBalanceError.style.display = 'none';
     }
 
     if (closeWithdrawalModal) {
@@ -128,99 +94,79 @@ function setupEventListeners() {
         });
     }
 
-    // Handle form submissions for balance adjustment
+    // Balance adjustment forms
     const addBalanceForm = document.getElementById('addBalanceForm');
     const subtractBalanceForm = document.getElementById('subtractBalanceForm');
 
-    addBalanceForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const amountInput = addBalanceForm.querySelector('input');
-        const amount = parseFloat(amountInput.value);
-        const errorElement = document.getElementById('addBalanceError');
-        
-        if (!amount || isNaN(amount) || amount < 0.01) {
-            errorElement.style.display = 'block';
-            return;
-        }
-        
-        errorElement.style.display = 'none';
-        showConfirmation('Add Balance', `Are you sure you want to add $${amount.toFixed(2)} to this user's balance?`, 
-            () => adjustUserBalance(currentUserId, 'add', amount));
-    });
-
-    subtractBalanceForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const amountInput = subtractBalanceForm.querySelector('input');
-        const amount = parseFloat(amountInput.value);
-        const errorElement = document.getElementById('subtractBalanceError');
-        
-        if (!amount || isNaN(amount) || amount < 0.01) {
-            errorElement.style.display = 'block';
-            return;
-        }
-        
-        errorElement.style.display = 'none';
-        showConfirmation('Subtract Balance', `Are you sure you want to subtract $${amount.toFixed(2)} from this user's balance?`, 
-            () => adjustUserBalance(currentUserId, 'subtract', amount));
-    });
-
-    // Message Modal
-    const messageModal = document.getElementById('messageModal');
-    const closeMessageModal = document.getElementById('closeMessageModal');
-    const confirmMessage = document.getElementById('confirmMessage');
-
-    function closeMessageModalFunc() {
-        messageModal.classList.remove('active');
-    }
-
-    if (closeMessageModal) {
-        closeMessageModal.addEventListener('click', closeMessageModalFunc);
-    }
-
-    if (confirmMessage) {
-        confirmMessage.addEventListener('click', closeMessageModalFunc);
-    }
-
-    if (messageModal) {
-        messageModal.addEventListener('click', (e) => {
-            if (e.target === messageModal) {
-                closeMessageModalFunc();
+    if (addBalanceForm) {
+        addBalanceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amountInput = addBalanceForm.querySelector('input');
+            const amount = parseFloat(amountInput.value);
+            const errorElement = document.getElementById('addBalanceError');
+            
+            if (!amount || isNaN(amount) || amount < 0.01) {
+                if (errorElement) errorElement.style.display = 'block';
+                return;
             }
+            
+            if (errorElement) errorElement.style.display = 'none';
+            showConfirmation('Add Balance', `Are you sure you want to add $${amount.toFixed(2)} to this user's balance?`, 
+                () => adjustUserBalance(currentUserId, 'add', amount));
         });
     }
 
+    if (subtractBalanceForm) {
+        subtractBalanceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amountInput = subtractBalanceForm.querySelector('input');
+            const amount = parseFloat(amountInput.value);
+            const errorElement = document.getElementById('subtractBalanceError');
+            
+            if (!amount || isNaN(amount) || amount < 0.01) {
+                if (errorElement) errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (errorElement) errorElement.style.display = 'none';
+            showConfirmation('Subtract Balance', `Are you sure you want to subtract $${amount.toFixed(2)} from this user's balance?`, 
+                () => adjustUserBalance(currentUserId, 'subtract', amount));
+        });
+    }
+
+    // Message Modal
+    setupModal('messageModal', 'closeMessageModal', 'confirmMessage');
+    
     // Confirmation Modal
-    const confirmationModal = document.getElementById('confirmationModal');
-    const closeConfirmationModal = document.getElementById('closeConfirmationModal');
-    const cancelAction = document.getElementById('cancelAction');
-    const confirmAction = document.getElementById('confirmAction');
+    setupModal('confirmationModal', 'closeConfirmationModal', 'cancelAction', 'confirmAction');
+}
 
-    function closeConfirmationModalFunc() {
-        confirmationModal.classList.remove('active');
-        currentAction = null;
+function setupModal(modalId, closeBtnId, cancelBtnId, confirmBtnId = null) {
+    const modal = document.getElementById(modalId);
+    const closeBtn = document.getElementById(closeBtnId);
+    const cancelBtn = document.getElementById(cancelBtnId);
+    const confirmBtn = confirmBtnId ? document.getElementById(confirmBtnId) : null;
+
+    function closeModal() {
+        if (modal) modal.classList.remove('active');
     }
 
-    if (closeConfirmationModal) {
-        closeConfirmationModal.addEventListener('click', closeConfirmationModalFunc);
-    }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
 
-    if (cancelAction) {
-        cancelAction.addEventListener('click', closeConfirmationModalFunc);
-    }
-
-    if (confirmAction) {
-        confirmAction.addEventListener('click', () => {
-            closeConfirmationModalFunc();
+    if (confirmBtn && confirmBtnId) {
+        confirmBtn.addEventListener('click', () => {
+            closeModal();
             if (currentAction) {
                 currentAction();
             }
         });
     }
 
-    if (confirmationModal) {
-        confirmationModal.addEventListener('click', (e) => {
-            if (e.target === confirmationModal) {
-                closeConfirmationModalFunc();
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
             }
         });
     }
@@ -232,11 +178,12 @@ function showConfirmation(title, message, action) {
     const confirmationTitle = document.getElementById('confirmationTitle');
     const confirmationText = document.getElementById('confirmationText');
     
-    confirmationTitle.textContent = title;
-    confirmationText.textContent = message;
-    currentAction = action;
-    
-    confirmationModal.classList.add('active');
+    if (confirmationModal && confirmationTitle && confirmationText) {
+        confirmationTitle.textContent = title;
+        confirmationText.textContent = message;
+        currentAction = action;
+        confirmationModal.classList.add('active');
+    }
 }
 
 // Show message modal
@@ -246,24 +193,27 @@ function showMessage(title, message, isSuccess = true) {
     const messageText = document.getElementById('messageText');
     const messageIcon = document.getElementById('messageIcon');
     
-    messageTitle.textContent = title;
-    messageText.textContent = message;
-    
-    messageIcon.innerHTML = isSuccess
-        ? '<i class="fas fa-check-circle success-icon"></i>'
-        : '<i class="fas fa-exclamation-circle error-icon"></i>';
-    
-    messageModal.classList.add('active');
+    if (messageModal && messageTitle && messageText && messageIcon) {
+        messageTitle.textContent = title;
+        messageText.textContent = message;
+        
+        messageIcon.innerHTML = isSuccess
+            ? '<i class="fas fa-check-circle success-icon"></i>'
+            : '<i class="fas fa-exclamation-circle error-icon"></i>';
+        
+        messageModal.classList.add('active');
+    }
 }
 
 // Load withdrawal data from API
 async function loadWithdrawalData() {
     try {
-        pendingSpinner.style.display = 'block';
-        processedSpinner.style.display = 'block';
-        pendingEmpty.style.display = 'none';
-        processedEmpty.style.display = 'none';
+        if (pendingSpinner) pendingSpinner.style.display = 'block';
+        if (processedSpinner) processedSpinner.style.display = 'block';
+        if (pendingEmpty) pendingEmpty.style.display = 'none';
+        if (processedEmpty) processedEmpty.style.display = 'none';
 
+        console.log('Loading withdrawal data...');
         const response = await fetch(`${API_BASE_URL}/admin/withdrawal`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`,
@@ -271,74 +221,88 @@ async function loadWithdrawalData() {
             }
         });
 
+        if(response.status === 401){
+            setTimeout(() =>{
+                window.location.href = '../index.html'
+            }, 3000)
+        }
+
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const withdrawals = await response.json();
+        const result = await response.json();
+        console.log('API Response:', result);
         
-        // Separate pending and processed withdrawals
-        const pendingWithdrawals = Array.isArray(withdrawals) ? withdrawals.filter(w => w.status === 'pending') : [];
-        const processedWithdrawals = Array.isArray(withdrawals) ? withdrawals.filter(w => w.status !== 'pending') : [];
+        const withdrawals = result.data?.withdrawals || result.withdrawals || [];
+        const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
+        const processedWithdrawals = withdrawals.filter(w => w.status !== 'pending');
         
-        // Update counts
-        pendingCount.textContent = pendingWithdrawals.length;
-        processedCount.textContent = processedWithdrawals.length;
+        if (pendingCount) pendingCount.textContent = pendingWithdrawals.length;
+        if (processedCount) processedCount.textContent = processedWithdrawals.length;
         
-        // Render tables
-        renderWithdrawalTable(pendingWithdrawals, pendingWithdrawalsBody, pendingSpinner, pendingEmpty, true);
-        renderWithdrawalTable(processedWithdrawals, processedWithdrawalsBody, processedSpinner, processedEmpty, false);
+        if (pendingWithdrawalsBody) {
+            renderWithdrawalTable(pendingWithdrawals, pendingWithdrawalsBody, pendingSpinner, pendingEmpty, true);
+        }
+        if (processedWithdrawalsBody) {
+            renderWithdrawalTable(processedWithdrawals, processedWithdrawalsBody, processedSpinner, processedEmpty, false);
+        }
     } catch (error) {
         console.error('Error loading withdrawal data:', error);
         showMessage('Error', `Failed to load withdrawal data: ${error.message}`, false);
-        pendingSpinner.style.display = 'none';
-        processedSpinner.style.display = 'none';
-        pendingEmpty.style.display = 'block';
-        processedEmpty.style.display = 'block';
+        if (pendingSpinner) pendingSpinner.style.display = 'none';
+        if (processedSpinner) processedSpinner.style.display = 'none';
+        if (pendingEmpty) pendingEmpty.style.display = 'block';
+        if (processedEmpty) processedEmpty.style.display = 'block';
     }
 }
 
 // Render withdrawal table
 function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showActions) {
-    spinner.style.display = 'none';
+    if (spinner) spinner.style.display = 'none';
     
     if (!withdrawals || withdrawals.length === 0) {
-        emptyMsg.style.display = 'block';
-        tableBody.innerHTML = '';
+        if (emptyMsg) emptyMsg.style.display = 'block';
+        if (tableBody) tableBody.innerHTML = '';
         return;
     }
     
-    emptyMsg.style.display = 'none';
-    tableBody.innerHTML = '';
+    if (emptyMsg) emptyMsg.style.display = 'none';
+    if (tableBody) tableBody.innerHTML = '';
     
     withdrawals.forEach(withdrawal => {
         const row = document.createElement('tr');
         const requestDate = new Date(withdrawal.createdAt).toLocaleString();
         
+        const withdrawalId = withdrawal.id || withdrawal._id;
+        const username = withdrawal.user?.username || 'Unknown User';
+        const userId = withdrawal.userId;
+        const userObjectId = withdrawal.user?.id;
+        
         row.innerHTML = `
-            <td>#WTH-${withdrawal._id}</td>
-            <td>${withdrawal.userId?.username || 'Unknown User'}</td>
+            <td>#WTH-${withdrawalId}</td>
+            <td>${username}</td>
             <td>$${Number(withdrawal.amount).toFixed(2)}</td>
-            <td>${withdrawal.method || 'N/A'}</td>
+            <td>${withdrawal.withdrawalMethod || withdrawal.method || 'N/A'}</td>
             <td>${requestDate}</td>
             ${showActions ? `
             <td>
                 <div class="action-buttons">
                     <button class="btn btn-sm btn-edit edit-withdrawal" 
-                        data-id="${withdrawal._id}" 
-                        data-user="${withdrawal.userId?.username || 'Unknown User'}" 
+                        data-id="${withdrawalId}" 
+                        data-user="${username}" 
                         data-amount="${withdrawal.amount}" 
-                        data-method="${withdrawal.method || 'N/A'}"
-                        data-userid="${withdrawal.userId?._id}">
+                        data-method="${withdrawal.withdrawalMethod || withdrawal.method || 'N/A'}"
+                        data-userid="${userObjectId || userId}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary approve-btn" 
-                        data-id="${withdrawal._id}" 
-                        data-userid="${withdrawal.userId?._id}" 
+                    <button class="btn btn-sm btn-success approve-btn" 
+                        data-id="${withdrawalId}" 
+                        data-userid="${userObjectId || userId}" 
                         data-amount="${withdrawal.amount}">Approve</button>
                     <button class="btn btn-sm btn-danger reject-btn" 
-                        data-id="${withdrawal._id}" 
-                        data-userid="${withdrawal.userId?._id}" 
+                        data-id="${withdrawalId}" 
+                        data-userid="${userObjectId || userId}" 
                         data-amount="${withdrawal.amount}">Reject</button>
                 </div>
             </td>
@@ -347,45 +311,59 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
             `}
         `;
         
-        tableBody.appendChild(row);
+        if (tableBody) tableBody.appendChild(row);
     });
     
-    if (showActions) {
+    if (showActions && tableBody) {
+        // Edit withdrawal buttons
         tableBody.querySelectorAll('.edit-withdrawal').forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
                 const transactionId = button.getAttribute('data-id');
                 const user = button.getAttribute('data-user');
                 const amount = button.getAttribute('data-amount');
                 const method = button.getAttribute('data-method');
                 const userId = button.getAttribute('data-userid');
 
-                document.getElementById('withdrawalTransactionId').textContent = `#WTH-${transactionId}`;
-                document.getElementById('withdrawalUser').textContent = user;
-                document.getElementById('withdrawalAmount').textContent = `$${Number(amount).toFixed(2)}`;
-                document.getElementById('withdrawalMethod').textContent = method;
-
                 currentWithdrawalId = transactionId;
                 currentUserId = userId;
 
-                document.getElementById('editWithdrawalModal').classList.add('active');
+                const withdrawalTransactionId = document.getElementById('withdrawalTransactionId');
+                const withdrawalUser = document.getElementById('withdrawalUser');
+                const withdrawalAmount = document.getElementById('withdrawalAmount');
+                const withdrawalMethod = document.getElementById('withdrawalMethod');
+
+                if (withdrawalTransactionId) withdrawalTransactionId.textContent = `#WTH-${transactionId}`;
+                if (withdrawalUser) withdrawalUser.textContent = user;
+                if (withdrawalAmount) withdrawalAmount.textContent = `$${Number(amount).toFixed(2)}`;
+                if (withdrawalMethod) withdrawalMethod.textContent = method;
+
+                const editWithdrawalModal = document.getElementById('editWithdrawalModal');
+                if (editWithdrawalModal) editWithdrawalModal.classList.add('active');
             });
         });
         
+        // Approve buttons - Map to 'confirmed' status
         tableBody.querySelectorAll('.approve-btn').forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
                 const withdrawalId = button.getAttribute('data-id');
                 const userId = button.getAttribute('data-userid');
                 const amount = parseFloat(button.getAttribute('data-amount'));
+                console.log('Approve clicked - will send "confirmed" status:', { withdrawalId, userId, amount });
                 showConfirmation('Approve Withdrawal', `Are you sure you want to approve this withdrawal of $${amount.toFixed(2)}?`, 
-                    () => updateWithdrawalStatus(withdrawalId, 'approved', userId, amount));
+                    () => updateWithdrawalStatus(withdrawalId, 'confirmed', userId, amount));
             });
         });
         
+        // Reject buttons - Map to 'rejected' status
         tableBody.querySelectorAll('.reject-btn').forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
                 const withdrawalId = button.getAttribute('data-id');
                 const userId = button.getAttribute('data-userid');
                 const amount = parseFloat(button.getAttribute('data-amount'));
+                console.log('Reject clicked - will send "rejected" status:', { withdrawalId, userId, amount });
                 showConfirmation('Reject Withdrawal', `Are you sure you want to reject this withdrawal of $${amount.toFixed(2)}?`, 
                     () => updateWithdrawalStatus(withdrawalId, 'rejected', userId, amount));
             });
@@ -393,78 +371,187 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
     }
 }
 
-// Update withdrawal status (approve/reject)
+// // Update withdrawal status - FIXED TO MATCH BACKEND EXPECTATIONS
+// async function updateWithdrawalStatus(withdrawalId, status, userId, amount) {
+//     try {
+//         console.log('Updating withdrawal status:', { withdrawalId, status, userId, amount });
+        
+//         const endpoint = `${API_BASE_URL}/admin/withdrawal/${withdrawalId}`;
+//         console.log('Making PATCH request to:', endpoint);
+        
+//         const requestBody = {
+//             status: status
+//         };
+        
+//         console.log('Request body:', requestBody);
+        
+//         const response = await fetch(endpoint, {
+//             method: 'PATCH',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `Bearer ${authToken}`
+//             },
+//             body: JSON.stringify(requestBody)
+//         });
+
+//         console.log('Response status:', response.status);
+        
+//         if (!response.ok) {
+//             let errorMessage = `HTTP ${response.status}`;
+//             try {
+//                 const errorData = await response.json();
+//                 errorMessage = errorData.message || errorMessage;
+//                 console.error('Server error response:', errorData);
+//             } catch (e) {
+//                 const errorText = await response.text();
+//                 errorMessage = errorText || errorMessage;
+//                 console.error('Server error text:', errorText);
+//             }
+//             throw new Error(errorMessage);
+//         }
+
+//         const result = await response.json();
+//         console.log('Withdrawal update successful:', result);
+
+//         // Show success message
+//         const actionText = status === 'confirmed' ? 'approved' : 'failed';
+//         showMessage('Success', `Withdrawal ${actionText} successfully!`);
+        
+//         // Reload data after a short delay
+//         setTimeout(() => {
+//             loadWithdrawalData();
+//         }, 1500);
+
+//     } catch (error) {
+//         console.error('Error updating withdrawal status:', error);
+        
+//         // Show specific error messages based on the error
+//         let userMessage = `Failed to update withdrawal: ${error.message}`;
+        
+//         if (error.message.includes('Invalid status')) {
+//             userMessage = 'Invalid status value. Please contact support.';
+//         } else if (error.message.includes('Withdrawal not found')) {
+//             userMessage = 'Withdrawal not found. It may have been already processed.';
+//         } else if (error.message.includes('cannot be updated')) {
+//             userMessage = 'This withdrawal cannot be updated in its current status.';
+//         }
+        
+//         showMessage('Error', userMessage, false);
+//     }
+// }
+// Update withdrawal status - FIXED to match model ENUM
 async function updateWithdrawalStatus(withdrawalId, status, userId, amount) {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/withdrawal/${withdrawalId}`, {
+        console.log('Updating withdrawal status:', { withdrawalId, status, userId, amount });
+        
+        // Map frontend status to backend ENUM values
+        const statusMap = {
+            'approved': 'confirmed',  // Map 'approved' to 'confirmed'
+            'rejected': 'failed'      // Map 'rejected' to 'failed'
+        };
+        
+        const backendStatus = statusMap[status] || status;
+        
+        const endpoint = `${API_BASE_URL}/admin/withdrawal/${withdrawalId}`;
+        console.log('Making PATCH request to:', endpoint);
+        
+        const requestBody = {
+            status: backendStatus
+        };
+        
+        console.log('Request body:', requestBody);
+        
+        const response = await fetch(endpoint, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify(requestBody)
         });
 
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
-            throw new Error(`Failed to update withdrawal status: ${response.statusText}`);
+            let errorMessage = `HTTP ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.message || errorMessage;
+                console.error('Server error response:', errorData);
+            } catch (e) {
+                const errorText = await response.text();
+                errorMessage = errorText || errorMessage;
+                console.error('Server error text:', errorText);
+            }
+            throw new Error(errorMessage);
         }
 
-        if (status === 'approved') {
-            const balanceResponse = await fetch(`${API_BASE_URL}/admin/users/${userId}/balance`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ operation: 'subtract', amount })
-            });
+        const result = await response.json();
+        console.log('Withdrawal update successful:', result);
 
-            if (!balanceResponse.ok) {
-                throw new Error('Failed to update user balance');
-            }
+        // Show success message
+        const actionText = status === 'approved' ? 'approved' : 'rejected';
+        showMessage('Success', `Withdrawal ${actionText} successfully!`);
+        
+        // Reload data after a short delay
+        setTimeout(() => {
+            loadWithdrawalData();
+        }, 1500);
 
-            const withdrawalResponse = await fetch(`${API_BASE_URL}/admin/users/${userId}/withdrawal`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ amount })
-            });
-
-            if (!withdrawalResponse.ok) {
-                throw new Error('Failed to update user total withdrawal');
-            }
-        }
-
-        showMessage('Success', `Withdrawal ${status} successfully`);
-        loadWithdrawalData();
     } catch (error) {
         console.error('Error updating withdrawal status:', error);
-        showMessage('Error', `Failed to update withdrawal status: ${error.message}`, false);
+        
+        // Show specific error messages based on the error
+        let userMessage = `Failed to update withdrawal: ${error.message}`;
+        
+        if (error.message.includes('Invalid status')) {
+            userMessage = 'Invalid status value. Please contact support.';
+        } else if (error.message.includes('Withdrawal not found')) {
+            userMessage = 'Withdrawal not found. It may have been already processed.';
+        } else if (error.message.includes('cannot be updated')) {
+            userMessage = 'This withdrawal cannot be updated in its current status.';
+        } else if (error.message.includes('Data truncated')) {
+            userMessage = 'Database error: Invalid status value. Please contact administrator.';
+        }
+        
+        showMessage('Error', userMessage, false);
     }
 }
 
 // Adjust user balance (add/subtract)
 async function adjustUserBalance(userId, operation, amount) {
     try {
+        console.log('Adjusting user balance:', { userId, operation, amount });
+        
         const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/balance`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({ operation, amount })
+            body: JSON.stringify({ 
+                operation, 
+                amount: amount
+            })
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to adjust user balance: ${response.statusText}`);
+            throw new Error(`Failed to adjust user balance: ${response.status} ${response.statusText}`);
         }
 
+        const result = await response.json();
+        console.log('Balance adjustment response:', result);
+
         showMessage('Success', `User balance ${operation === 'add' ? 'increased' : 'decreased'} by $${amount.toFixed(2)}`);
-        document.getElementById('editWithdrawalModal').classList.remove('active');
-        document.getElementById('addBalanceForm').reset();
-        document.getElementById('subtractBalanceForm').reset();
+        
+        const editWithdrawalModal = document.getElementById('editWithdrawalModal');
+        if (editWithdrawalModal) editWithdrawalModal.classList.remove('active');
+        
+        const addBalanceForm = document.getElementById('addBalanceForm');
+        const subtractBalanceForm = document.getElementById('subtractBalanceForm');
+        if (addBalanceForm) addBalanceForm.reset();
+        if (subtractBalanceForm) subtractBalanceForm.reset();
+        
         loadWithdrawalData();
     } catch (error) {
         console.error('Error adjusting user balance:', error);

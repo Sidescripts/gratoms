@@ -18,7 +18,7 @@ function InvestmentController() {
         }
 
         const { asset, amount, name, id } = req.body;
-        console.log(req.body)
+        // console.log(req.body)
         const userId = req.user.id;
 
         // Check for existing active investment

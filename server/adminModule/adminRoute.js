@@ -43,6 +43,6 @@ router.patch('/investment/update/:investmentId',AuthMid, AdminInvestmentControll
 // // ADMIN WITHDRAWAL ROUTE
 router.get('/withdrawal', AuthMid, adminWithdrawalController.getAllWithdrawals);
 router.get('/withdrawal-stat',  AuthMid, adminWithdrawalController.getWithdrawalStats);
-router.patch('/withdrawal/:id', AuthMid, adminWithdrawalController.updateWithdrawalStatus);
+router.patch('/withdrawal/:withdrawalId', AuthMid, adminWithdrawalController.updateWithdrawalStatus);
 
 module.exports = router;

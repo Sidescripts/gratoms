@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: document.getElementById('email').value.trim(),
+                    email: document.getElementById('email').value,
                     password: document.getElementById('password').value
                 })
             });

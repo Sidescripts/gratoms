@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       validate: {
         isDecimal: true,
-        min: 1000.00
+        min: 200.00
       }
     },
     withdrawalMethod: {
