@@ -27,7 +27,7 @@ const adminWithdrawalController = {
                     'createdAt',
                     'processed_at',
                     'completed_at',
-                    'userId',
+                    'userId'
                 ],
                 where: whereClause,
                 include: [
@@ -57,7 +57,7 @@ const adminWithdrawalController = {
     // Approve, complete, or reject a withdrawal
     updateWithdrawalStatus: async (req, res) => {
         try {
-            console.log("withdrawal")
+            // console.log("withdrawal")
             const validationError = handleValidationErrors(req);
             if (validationError) {
                 return validationError;
@@ -95,7 +95,7 @@ const adminWithdrawalController = {
                     },
                 ],
             });
-            console.log(withdrawal)
+            // console.log(withdrawal)
             if (!withdrawal) {
                 
                 return res.status(404).json({
