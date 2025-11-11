@@ -133,14 +133,13 @@ function ROIService() {
                   [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
                   walletBalance: investmentAmount
                 }); 
-
                 
                 // Mark investment as completed
                 await investment.update({
                   status: 'completed',
                   actual_roi: totalROI,
                   payout_date: endDate
-                });
+                }, { where: { id: investment.id }});
 
                 // Create transaction for capital return to asset balance
                 await Transaction.create({

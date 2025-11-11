@@ -22,12 +22,12 @@ function InvestmentController() {
         const userId = req.user.id;
 
         // Check for existing active investment
-        const existingInvestment = await Investment.findOne({
-          where: {
-            userId: userId,
-            status: 'active'
-          }
-        });
+        // const existingInvestment = await Investment.findOne({
+        //   where: {
+        //     userId: userId,
+        //     status: 'active'
+        //   }
+        // });
 
         if (existingInvestment) {
           return res.status(400).json({
