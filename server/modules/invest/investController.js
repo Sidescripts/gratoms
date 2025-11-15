@@ -21,21 +21,6 @@ function InvestmentController() {
         // console.log(req.body)
         const userId = req.user.id;
 
-        // Check for existing active investment
-        // const existingInvestment = await Investment.findOne({
-        //   where: {
-        //     userId: userId,
-        //     status: 'active'
-        //   }
-        // });
-
-        if (existingInvestment) {
-          return res.status(400).json({
-            success: false,
-            error: 'User already has an active investment'
-          });
-        }
-
         // Find investment plan
         const plan = await InvestmentPlan.findOne({ where: { id } });
         if (!plan) {
