@@ -146,7 +146,7 @@ function ROIService() {
                   userId: investment.user.id,
                   investmentId: investment.id,
                   amount: totalAssetAmount,
-                  type: 'Asset Balance Credit',
+                  type: 'ROI Credit',
                   description: `Capital return + total ROI credited to ${assetType} balance for ${investment.investmentPlan.name} investment`,
                   transactionId: `txn_${uuidv4()}`,
                   asset: assetType
