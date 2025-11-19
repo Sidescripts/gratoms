@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
           
           const endpoint = action === 'deactivate' ? 
-              `/api/v1/admin/invest/deactivate/${planId}` : 
+              `/api/v1/admin/k/${planId}` : 
               `/api/v1/admin/invest/update/${planId}`;
           
           const body = action === 'deactivate' ? 
@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function() {
               return;
           }
           
-          const response = await fetch(`/api/v1/admin/invest/delete/${planId}`, {
+          const response = await fetch(`/api/v1/admin/g/${planId}`, {
               method: 'DELETE',
               headers: {
                   'Content-Type': 'application/json',

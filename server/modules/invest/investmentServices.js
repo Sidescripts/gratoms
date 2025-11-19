@@ -92,7 +92,8 @@ function ROIService() {
               await User.increment(
                 { 
                   walletBalance: roiAmountNum,
-                  revenue: roiAmountNum
+                  revenue: roiAmountNum,
+                  [`${assetType.toLowerCase()}Bal`]: roiAmountNum
                 },
                 { where: { id: investment.user.id } }
               );
@@ -123,7 +124,8 @@ function ROIService() {
                 // Calculate total amount to add to asset balance (initial investment + total revenue)
                 const investmentAmount = parseFloat(investment.amount);
                 const totalRevenue = totalROI; // Total ROI over the entire period
-                const totalAssetAmount = investmentAmount + totalRevenue;
+                // const totalRevenue = parseFloat(user.revenue); // changed this to be using revenue
+                const totalAssetAmount = investmentAmount + totalRevenue; // this is now revenue + investment amount
 
                 // Update the specific asset balance (ONLY ON LAST DAY)
                 const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
@@ -258,9 +260,7 @@ function ROIService() {
             const currentAssetBalance = user[`${assetType.toLowerCase()}Bal`] || 0;
             const newAssetBalance = parseFloat(currentAssetBalance) + totalAssetAmount;
             
-            // await user.update({
-            //   [`${assetType.toLowerCase()}Bal`]: newAssetBalance
-            // });
+            
             await user.increment({
               [`${assetType.toLowerCase()}Bal`]: newAssetBalance,
               walletBalance: investmentAmount

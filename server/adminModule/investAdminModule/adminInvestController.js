@@ -165,7 +165,7 @@ function AdminInvestmentController() {
       
       try {
         const { planId } = req.params;
-        console.log(planId)
+        // console.log(planId)
         const plan = await InvestmentPlan.findByPk(planId);
         if (!plan) {
           
@@ -223,9 +223,9 @@ function AdminInvestmentController() {
       
       try {
         const { planId } = req.params;
-        console.log(planId)
+      
         const plan = await InvestmentPlan.findByPk(planId);
-        console.log(plan)
+      
         if (!plan) {
           
           return res.status(404).json({ 
