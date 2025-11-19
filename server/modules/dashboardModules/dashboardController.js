@@ -125,6 +125,14 @@ async function getCurrentUser(req, res) {
       
       const walletBalance = btcBal + ethBal + ltcBal + usdtBal + bchBal + dashBal + bnbBal + dogeBal;
 
+
+      
+      // Update walletbalance, defaulting to 0.0 if null
+      await User.update(
+        { walletBalance: walletBalance || 0.0 },
+        { where: { id: userId } }
+      );
+
       return res.status(200).json({
         success: true,
         username: user.username,
