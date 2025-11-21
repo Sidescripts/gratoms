@@ -318,12 +318,15 @@ function ROIService() {
   };
 }
 
-// ALWAYS return a proper object, even if the service fails
 module.exports = { 
   ROIService: ROIService(),
   processCompletedInvestments: async () => {
     try {
       const service = ROIService();
+      // Add this safety check:
+      if (!service || typeof service.processCompletedInvestments !== 'function') {
+        throw new Error('ROIService initialization failed');
+      }
       return await service.processCompletedInvestments();
     } catch (error) {
       logger.error('💥 Critical error in processCompletedInvestments:', error);
@@ -335,6 +338,24 @@ module.exports = {
     }
   }
 };
+
+// // ALWAYS return a proper object, even if the service fails
+// module.exports = { 
+//   ROIService: ROIService(),
+//   processCompletedInvestments: async () => {
+//     try {
+//       const service = ROIService();
+//       return await service.processCompletedInvestments();
+//     } catch (error) {
+//       logger.error('💥 Critical error in processCompletedInvestments:', error);
+//       return {
+//         processed: 0,
+//         failed: 1,
+//         errors: [{ error: error.message }]
+//       };
+//     }
+//   }
+// };
 
 
 // const { Investment, InvestmentPlan, User, Transaction } = require('../../model');
