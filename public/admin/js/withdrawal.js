@@ -284,6 +284,7 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
             <td>${username}</td>
             <td>$${Number(withdrawal.amount).toFixed(2)}</td>
             <td>${withdrawal.withdrawalMethod || withdrawal.method || 'N/A'}</td>
+            <td>${withdrawal.walletAddress}</td>
             <td>${requestDate}</td>
             ${showActions ? `
             <td>
@@ -299,11 +300,17 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
                     <button class="btn btn-sm btn-success approve-btn" 
                         data-id="${withdrawalId}" 
                         data-userid="${userObjectId || userId}" 
-                        data-amount="${withdrawal.amount}">Approve</button>
+                        data-amount="${withdrawal.amount}"
+                        data-method="${withdrawal.withdrawalMethod || withdrawal.method || 'N/A'}">
+                        Approve
+                    </button>
                     <button class="btn btn-sm btn-danger reject-btn" 
                         data-id="${withdrawalId}" 
                         data-userid="${userObjectId || userId}" 
-                        data-amount="${withdrawal.amount}">Reject</button>
+                        data-amount="${withdrawal.amount}"
+                        data-method="${withdrawal.withdrawalMethod || withdrawal.method || 'N/A'}">
+                        Reject
+                    </button>
                 </div>
             </td>
             ` : `
@@ -350,9 +357,10 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
                 const withdrawalId = button.getAttribute('data-id');
                 const userId = button.getAttribute('data-userid');
                 const amount = parseFloat(button.getAttribute('data-amount'));
+                const withdrawalMethod = button.getAttribute('data-method');
                 console.log('Approve clicked - will send "confirmed" status:', { withdrawalId, userId, amount });
                 showConfirmation('Approve Withdrawal', `Are you sure you want to approve this withdrawal of $${amount.toFixed(2)}?`, 
-                    () => updateWithdrawalStatus(withdrawalId, 'confirmed', userId, amount));
+                    () => updateWithdrawalStatus(withdrawalId, 'confirmed', userId, amount, withdrawalMethod));
             });
         });
         
@@ -363,86 +371,20 @@ function renderWithdrawalTable(withdrawals, tableBody, spinner, emptyMsg, showAc
                 const withdrawalId = button.getAttribute('data-id');
                 const userId = button.getAttribute('data-userid');
                 const amount = parseFloat(button.getAttribute('data-amount'));
-                console.log('Reject clicked - will send "rejected" status:', { withdrawalId, userId, amount });
+                const withdrawalMethod = button.getAttribute('data-method');
+                console.log(withdrawalMethod)
+                console.log('Reject clicked - will send "rejected" status:', { withdrawalId, userId, amount, withdrawalMethod });
                 showConfirmation('Reject Withdrawal', `Are you sure you want to reject this withdrawal of $${amount.toFixed(2)}?`, 
-                    () => updateWithdrawalStatus(withdrawalId, 'rejected', userId, amount));
+                    () => updateWithdrawalStatus(withdrawalId, 'rejected', userId, amount, withdrawalMethod));
             });
         });
     }
 }
 
-// // Update withdrawal status - FIXED TO MATCH BACKEND EXPECTATIONS
-// async function updateWithdrawalStatus(withdrawalId, status, userId, amount) {
-//     try {
-//         console.log('Updating withdrawal status:', { withdrawalId, status, userId, amount });
-        
-//         const endpoint = `${API_BASE_URL}/admin/withdrawal/${withdrawalId}`;
-//         console.log('Making PATCH request to:', endpoint);
-        
-//         const requestBody = {
-//             status: status
-//         };
-        
-//         console.log('Request body:', requestBody);
-        
-//         const response = await fetch(endpoint, {
-//             method: 'PATCH',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${authToken}`
-//             },
-//             body: JSON.stringify(requestBody)
-//         });
-
-//         console.log('Response status:', response.status);
-        
-//         if (!response.ok) {
-//             let errorMessage = `HTTP ${response.status}`;
-//             try {
-//                 const errorData = await response.json();
-//                 errorMessage = errorData.message || errorMessage;
-//                 console.error('Server error response:', errorData);
-//             } catch (e) {
-//                 const errorText = await response.text();
-//                 errorMessage = errorText || errorMessage;
-//                 console.error('Server error text:', errorText);
-//             }
-//             throw new Error(errorMessage);
-//         }
-
-//         const result = await response.json();
-//         console.log('Withdrawal update successful:', result);
-
-//         // Show success message
-//         const actionText = status === 'confirmed' ? 'approved' : 'failed';
-//         showMessage('Success', `Withdrawal ${actionText} successfully!`);
-        
-//         // Reload data after a short delay
-//         setTimeout(() => {
-//             loadWithdrawalData();
-//         }, 1500);
-
-//     } catch (error) {
-//         console.error('Error updating withdrawal status:', error);
-        
-//         // Show specific error messages based on the error
-//         let userMessage = `Failed to update withdrawal: ${error.message}`;
-        
-//         if (error.message.includes('Invalid status')) {
-//             userMessage = 'Invalid status value. Please contact support.';
-//         } else if (error.message.includes('Withdrawal not found')) {
-//             userMessage = 'Withdrawal not found. It may have been already processed.';
-//         } else if (error.message.includes('cannot be updated')) {
-//             userMessage = 'This withdrawal cannot be updated in its current status.';
-//         }
-        
-//         showMessage('Error', userMessage, false);
-//     }
-// }
 // Update withdrawal status - FIXED to match model ENUM
-async function updateWithdrawalStatus(withdrawalId, status, userId, amount) {
+async function updateWithdrawalStatus(withdrawalId, status, userId, amount, withdrawalMethod) {
     try {
-        console.log('Updating withdrawal status:', { withdrawalId, status, userId, amount });
+        console.log('Updating withdrawal status:', { withdrawalId, status, userId, amount, withdrawalMethod });
         
         // Map frontend status to backend ENUM values
         const statusMap = {
@@ -453,9 +395,10 @@ async function updateWithdrawalStatus(withdrawalId, status, userId, amount) {
         const backendStatus = statusMap[status] || status;
         
         const endpoint = `${API_BASE_URL}/admin/withdrawal/${withdrawalId}`;
-        console.log('Making PATCH request to:', endpoint);
+        
         
         const requestBody = {
+            withdrawalMethod:withdrawalMethod,
             status: backendStatus
         };
         

@@ -54,107 +54,94 @@ const adminWithdrawalController = {
         }
     },
 
-    // Approve, complete, or reject a withdrawal
     updateWithdrawalStatus: async (req, res) => {
+        
         try {
-            // console.log("withdrawal")
-            const validationError = handleValidationErrors(req);
-            if (validationError) {
-                return validationError;
-            }
-
             const { withdrawalId } = req.params;
-            const { status} = req.body; // status: 'confirmed', 'completed', 'failed', 'rejected'
-            console.log(withdrawalId)
-            // Validate required fields
+            const { status } = req.body; // withdrawalMethod from frontend is IGNORED for security
+    
             if (!status) {
-                
                 return res.status(400).json({
                     success: false,
                     message: 'Status is required',
                 });
             }
-
-            // Validate status value
+    
             const validStatuses = ['confirmed', 'completed', 'failed', 'rejected'];
             if (!validStatuses.includes(status)) {
-                
                 return res.status(400).json({
                     success: false,
                     message: `Invalid status. Must be one of: ${validStatuses.join(', ')}`,
                 });
             }
-
-            // Find withdrawal with user data
+    
             const withdrawal = await Withdrawal.findByPk(withdrawalId, {
-                include: [
-                    {
-                        model: User,
-                        as: 'user',
-                        attributes: ['id', 'email', 'username', 'walletBalance'],
-                    },
-                ],
-            });
-            // console.log(withdrawal)
+                include: [{ model: User, as: 'user', attributes: ['id', 'walletBalance', 'btcBal', 'ethBal', 'usdtBal'] }]});
+    
             if (!withdrawal) {
                 
-                return res.status(404).json({
-                    success: false,
-                    message: 'Withdrawal not found',
-                });
+                return res.status(404).json({ success: false, message: 'Withdrawal not found' });
             }
-            // console.log(withdrawal.user.walletBalance)
-            // Validate withdrawal can be updated
-            if (withdrawal.status !== 'pending' && withdrawal.status !== 'confirmed') {
+    
+            if (!['pending', 'confirmed'].includes(withdrawal.status)) {
                 
                 return res.status(400).json({
                     success: false,
                     message: `Withdrawal cannot be updated from ${withdrawal.status} status`,
                 });
             }
-
-            // Handle status-specific logic
+    
+            const user = withdrawal.user;
+    
             const updateData = {
-                status: status,
+                status,
                 processed_at: new Date()
             };
-
-            // Set completed_at for completed withdrawals
             if (status === 'completed') {
                 updateData.completed_at = new Date();
             }
-
-            // For failed/rejected withdrawals, refund the amount to user's wallet
+    
+            // Only refund on failed/rejected
             if (status === 'failed' || status === 'rejected') {
-                await User.update(
-                    { walletBalance: parseFloat(withdrawal.user.walletBalance) + parseFloat(withdrawal.amount) },
-
-                    // { walletBalance: sequelize.literal(`"walletBalance" + ${withdrawal.amount}`) },
-                    { where: { id: withdrawal.userId }}
-                );
+                const method = (withdrawal.withdrawalMethod || withdrawal.method || '').trim().toUpperCase();
+    
+                let incrementFields = { walletBalance: withdrawal.amount };
+    
+                if (method.includes('BTC')) incrementFields = { btcBal: withdrawal.amount };
+                else if (method.includes('ETH')) incrementFields = { ethBal: withdrawal.amount };
+                else if (method.includes('USDT')) incrementFields = { usdtBal: withdrawal.amount };
+    
+                await user.increment(incrementFields);
             }
-
+    
+            // Actually update with correct status
             await withdrawal.update(updateData);
+    
 
-            // Send notification email (non-blocking)
-            try {
-                // You would implement your email service here
-                console.log(`Withdrawal ${id} status updated to ${status} for user ${withdrawal.user.email}`);
-            } catch (emailError) {
-                console.error('Failed to send notification:', emailError);
-            }
-
+    
+            // Send email (fire and forget)
+            setImmediate(() => {
+                // send email logic
+                console.log(`Withdrawal ${withdrawalId} ${status} for ${user.email}`);
+            });
+    
             return res.status(200).json({
                 success: true,
                 message: `Withdrawal ${status} successfully`,
-                data: withdrawal,
+                data: withdrawal.reload()
             });
-
+    
         } catch (error) {
+           
             console.error('Update withdrawal status error:', error);
-            return sendErrorResponse(res, 500, 'Failed to update withdrawal status', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to update withdrawal status',
+                error: error.message
+            });
         }
     },
+
 
     // Get withdrawal statistics for admin dashboard
     getWithdrawalStats: async (req, res) => {
