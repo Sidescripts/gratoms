@@ -852,8 +852,9 @@
             </div>
         </div>
     </div>
-
+    <script src="../js/adminAuthCheck.js"></script>
     <script>
+        // alert("kpo police")
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const menuToggle = document.getElementById('menuToggle');
@@ -900,7 +901,7 @@
             }
 
             // Global variables
-            const API_BASE_URL = 'http://localhost:2000/api/v1/admin';
+            const API_BASE_URL = '/api/v1/admin';
             let currentPage = 1;
             let totalPages = 1;
             let currentFilters = {};
@@ -1311,65 +1312,7 @@
                 }
             }
 
-            // Process ROI payout
-            // async function processROIPayout() {
-            //     try {
-            //         showLoader(true);
-            //         const token = localStorage.getItem('token');
-            //         if (!token) {
-            //             showMessage('Error', 'Authentication token not found. Please login again.');
-            //             return;
-            //         }
-
-            //         // Find the investment to get the payout amount
-            //         const investment = allInvestments.find(inv => inv.id == currentInvestmentId);
-            //         if (!investment) {
-            //             throw new Error('Investment not found');
-            //         }
-
-            //         const payoutAmount = investment.expected_roi || 0;
-
-            //         const response = await fetch(`/api/v1/admin/investment/update/${currentInvestmentId}`, {
-            //             method: 'PATCH',
-            //             headers: {
-            //                 'Content-Type': 'application/json',
-            //                 'Authorization': `Bearer ${token}`
-            //             },
-            //             body: JSON.stringify({
-            //                 amount: payoutAmount
-            //             })
-            //         });
-
-            //         if (response.status === 401) {
-            //             setTimeout(() => {
-            //                 window.location.href = "../index.html";
-            //             }, 2000);
-            //             throw new Error('Session expired. Please login again.');
-            //         }
-
-            //         if (!response.ok) {
-            //             const errorData = await response.json().catch(() => ({}));
-            //             // showMessage('Error',  errorData.error);
-            //             // console.log(errorData)
-            //             alert(errorData.error)
-            //             // throw new Error(errorData.error || `Failed to process ROI payout: ${response.status}`);
-            //         }
-
-            //         const result = await response.json();
-            //         closePayoutModalFunc();
-            //         showMessage('Success', result.message || 'ROI payout processed successfully!');
-                    
-            //         // Refresh the investments list
-            //         fetchInvestments();
-
-            //     } catch (error) {
-            //         console.error('Error processing ROI payout:', error);
-            //         showMessage('Error', 'Failed to process ROI payout: ' + error.message);
-            //     } finally {
-            //         showLoader(false);
-            //     }
-            // }
-
+            
             async function processROIPayout() {
     try {
         showLoader(true);
