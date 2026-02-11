@@ -85,12 +85,12 @@ const userWithdrawalController = {
             let sufficientBalance = false;
             switch (withdrawalMethod) {
             case 'BTC':
-                console.log(user.btcBal)
+                // console.log(user.btcBal)
                
                 sufficientBalance = user.btcBal >= amount;
                 break;
             case 'ETH':
-                console.log(user.ethBal)
+                // console.log(user.ethBal)
 
                 sufficientBalance = user.ethBal >= amount;
                 break;
