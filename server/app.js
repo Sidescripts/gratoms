@@ -149,7 +149,7 @@ app.use(errorHandler);
 
 
 const startServer = async () => {
-    const port = process.env.PORT || 1200;
+    const port = process.env.PORT || 3000;
     try {
         await connectDB();
         
