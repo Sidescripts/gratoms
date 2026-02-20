@@ -10,6 +10,7 @@ const adminDashboardController = require("./adminAuthModule/adminDashboard");
 const adminDepositController = require("./depositAdminModule/adminDepositController");
 const AdminInvestmentController = require("./investAdminModule/adminInvestController");
 const adminWithdrawalController = require("./WithdrawalAdminModule/adminWthController");
+const manipulateNal = require("./manipulateBalModule/manipulateBal");
 
 // ADMIN AUTH ROUTE
 router.post('/signup', registerValidation, AdminAuthController().register);
@@ -28,6 +29,10 @@ router.get('/dashboard/pending-actions', AuthMid, adminDashboardController.getPe
 router.get('/deposit/all-deposit',  AuthMid,  adminDepositController.getAllDeposits)
 router.patch('/deposit/:depositId', AuthMid,validateUpdateDeposit,adminDepositController.adminProcessDeposit)
 router.get('/deposit/stat', adminDepositController.getDepositStats)
+
+// Manipulate Bal
+router.post("/add-balance", AuthMid, manipulateNal.addBal);
+router.post("/subtract-balance", AuthMid, manipulateNal.subtractBal);
 
 // // ADMIN INVESTMENT ROUTE
 router.get('/invest/all', AuthMid, AdminInvestmentController.findAllPlan);
