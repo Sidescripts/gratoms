@@ -385,17 +385,18 @@
                 
                 <div class="table-responsive">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Joined</th>
-                                <th>Status</th>
-                                <th>Balance</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Username</th>        
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Joined</th>
+                                    <th>Status</th>
+                                    <th>Balance</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>    
                         <tbody>
                             <!-- Rows added dynamically -->
                         </tbody>
@@ -470,6 +471,7 @@
     </div>
 
     <!-- Edit User Modal -->
+<!-- Edit User Modal -->
     <div class="modal-overlay" id="editUserModal">
         <div class="modal">
             <div class="modal-header">
@@ -496,6 +498,14 @@
                             <label for="currentUserBalance">Current Balance ($)</label>
                             <input type="text" class="form-control" id="currentUserBalance" readonly>
                         </div>
+
+                        <!-- Username – manual entry, simple placeholder -->
+                        <div class="form-group col-md-6">
+                            <label for="editUserUsername">Username</label>
+                            <input type="text" class="form-control" id="editUserUsername" 
+                                placeholder="Type the exact username here">
+                        </div>
+
                         <div class="form-group col-md-6">
                             <label for="assetType">Select Asset</label>
                             <select class="form-control" id="assetType">
@@ -504,16 +514,23 @@
                                 <option value="eth">ETH</option>
                                 <option value="bnb">BNB</option>
                             </select>
-                            <small class="form-text text-muted">Enter amounts in asset units (e.g., $ for USDT, coin amount for BTC/ETH/BNB). Total balance will update based on asset worth.</small>
+                            <small class="form-text text-muted">
+                                Enter amounts in selected asset units
+                            </small>
                         </div>
+
                         <div class="form-group col-md-6">
                             <label for="addToBalance">Add Amount</label>
-                            <input type="number" class="form-control" id="addToBalance" step="0.00000001" min="0" value="0">
+                            <input type="number" class="form-control" id="addToBalance" 
+                                step="0.00000001" min="0" value="0">
                         </div>
+
                         <div class="form-group col-md-6">
                             <label for="subtractFromBalance">Subtract Amount</label>
-                            <input type="number" class="form-control" id="subtractFromBalance" step="0.00000001" min="0" value="0">
+                            <input type="number" class="form-control" id="subtractFromBalance" 
+                                step="0.00000001" min="0" value="0">
                         </div>
+
                         <div class="form-group col-md-6">
                             <label for="editUserStatus">Status</label>
                             <select class="form-control" id="editUserStatus" disabled>
@@ -522,6 +539,7 @@
                                 <option value="banned">Banned</option>
                             </select>
                         </div>
+
                         <div class="form-group col-md-6">
                             <label for="editUserPlan">Investment Plan</label>
                             <select class="form-control" id="editUserPlan" disabled>
@@ -531,6 +549,7 @@
                                 <option value="vip">VIP Plan</option>
                             </select>
                         </div>
+
                         <div class="form-group col-md-6">
                             <label for="editUserCountry">Country</label>
                             <input type="text" class="form-control" id="editUserCountry" readonly>
