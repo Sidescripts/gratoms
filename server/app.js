@@ -144,6 +144,7 @@ app.use('/api/v1/deposit', depositRoute);
 app.use('/api/v1/withdrawal', withdrawalRoute);
 app.use('/api/v1/invest', investRoute);
 app.use("/api/v1/admin", adminRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
 

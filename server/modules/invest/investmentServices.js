@@ -90,7 +90,7 @@ function ROIService() {
                 // Single increment: today's ROI to wallet/revenue + full capital+ROI to asset
                 await User.increment(
                   {
-                    walletBalance: investmentAmount + roiAmountNum,
+                    walletBalance: investmentAmount,
                     revenue: roiAmountNum,
                     [`${assetType.toLowerCase()}Bal`]: totalAssetAmount
                   },
@@ -153,6 +153,7 @@ function ROIService() {
                     email: userEmail,
                     planName: investment.investmentPlan.name,
                     roiAmount: roiAmountNum,
+                    investmentId: investment.id,
                     date: todayStart,
                     transactionId: investment.transaction_id
                   });
