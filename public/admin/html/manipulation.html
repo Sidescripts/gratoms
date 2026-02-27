@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin — Balance Control</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,29 +31,140 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 48px 16px;
       overflow-x: hidden;
     }
 
-    body::before, body::after { /* your background effects */ 
+    body::before, body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
       pointer-events: none;
-      z-index: 0;
+      z-index: -2;
+    }
+
+    body::before {
+      background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
     body::after {
       top: -200px; right: -200px;
       width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 70%);
+      z-index: -1;
     }
 
-    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 540px; }
+    /* ─── SIDEBAR ──────────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      color: var(--text);
+      z-index: 1000;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(0);
+    }
 
-    /* ==================== ALL YOUR ORIGINAL STYLES (unchanged) ==================== */
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 16px 0;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.22s ease;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      background: rgba(0,229,160,0.08);
+      color: var(--accent);
+    }
+
+    .sidebar-nav a.active {
+      border-left: 3px solid var(--accent);
+      padding-left: 17px;
+    }
+
+    .sidebar-nav i { width: 20px; text-align: center; }
+
+    /* Hamburger */
+    .hamburger {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1200;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-size: 1.9rem;
+      cursor: pointer;
+      padding: 8px;
+      display: none;
+      transition: left 0.35s ease, color 0.25s ease;
+    }
+
+    body.sidebar-open .hamburger {
+      left: auto;
+      right: 16px;
+      color: var(--accent2);
+      z-index: 1300;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Main content wrapper */
+    .main-content {
+      position: relative;
+      width: 100%;
+      margin-left: 960px;
+      padding: 48px 16px;
+      transition: margin-left 0.35s ease;
+    }
+
+    /* ─── Original content layout restored ─────────────── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 540px;
+    }
+
     .header { margin-bottom: 40px; animation: fadeDown 0.6s ease both; }
     .header-label { font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
     .header h1 { font-family: 'Syne', sans-serif; font-size: clamp(28px, 5vw, 40px); font-weight: 800; line-height: 1.1; }
@@ -97,222 +210,157 @@
     .log-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; display: flex; justify-content: space-between; font-size: 12px; }
     .log-amount.add { color: var(--accent); }
     .log-amount.sub { color: var(--accent2); }
+
+    /* Spinner */
+    .btn.loading .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #000;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0 !important; padding: 70px 16px 40px; }
+      .hamburger { display: block; }
+    }
+
+    @media (max-width: 480px) {
+      .wrapper { max-width: 100%; }
+      .card { padding: 24px 18px; }
+    }
   </style>
 </head>
 <body>
 
-<div class="wrapper">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
 
-  <div class="header">
-    <div class="header-label">// admin panel</div>
-    <h1>Balance <span>Control</span></h1>
-    <p>Manually adjust user crypto balances. All changes are permanent and logged.</p>
-  </div>
+  <div class="overlay" id="overlay"></div>
 
-  <div class="tabs">
-      <button class="tab-btn add active" onclick="switchTab('add')">＋ Add Balance</button>
-      <button class="tab-btn sub" onclick="switchTab('sub')">－ Subtract Balance</button>   
-  </div>
-
-  <div class="card add-mode" id="card">
-    <div class="field">
-      <label>Username</label>
-      <input type="text" id="username" placeholder="e.g. Tuga" autocomplete="off" />
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <i class="fa-solid fa-chart-line"></i>
+      <h2>Admin Panel</h2>
     </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="./adminDash.html"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="./users.html"><i class="fa-solid fa-users"></i> Users</a></li>
+        <li><a href="./manipulation.html" class="active"><i class="fa-solid fa-wallet"></i> Add / Subtract</a></li>
+        <li><a href="./deposits.html"><i class="fa-solid fa-money-bill-wave"></i> Deposits</a></li>
+        <li><a href="./withdrawal.html"><i class="fa-solid fa-wallet"></i> Withdrawals</a></li>
+        <li><a href="./plans.html"><i class="fa-solid fa-chart-pie"></i> Investment plan</a></li>
+        <li><a href="./investment.html"><i class="fa-solid fa-chart-pie"></i> Investments</a></li>
+        <li><a href="./settings.html"><i class="fa-solid fa-cog"></i> Settings</a></li>
+        <li><a href="../index.html" id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
 
-    <div class="field">
-      <label>Asset</label>
-      <div class="asset-grid">
-        <button class="asset-btn selected" data-asset="USDT" onclick="selectAsset(this)"><span class="asset-icon">₮</span>USDT</button>
-        <button class="asset-btn" data-asset="BTC" onclick="selectAsset(this)"><span class="asset-icon">₿</span>BTC</button>
-        <button class="asset-btn" data-asset="ETH" onclick="selectAsset(this)"><span class="asset-icon">Ξ</span>ETH</button>
+  <div class="main-content">
+    <div class="wrapper">
+
+      <div class="header">
+        <div class="header-label">// admin panel</div>
+        <h1>Balance <span>Control</span></h1>
+        <p>Manually adjust user crypto balances. All changes are permanent and logged.</p>
       </div>
-    </div>
 
-    <div class="field">
-      <label>Amount</label>
-      <div class="amount-wrap">
-        <span class="amount-prefix">#</span>
-        <input type="number" id="amount" placeholder="0.00" min="0" step="any" />
+      <div class="tabs">
+        <button class="tab-btn add active" onclick="switchTab('add')">＋ Add Balance</button>
+        <button class="tab-btn sub" onclick="switchTab('sub')">－ Subtract Balance</button>
       </div>
+
+      <div class="card add-mode" id="card">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="e.g. Tuga" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label>Asset</label>
+          <div class="asset-grid">
+            <button class="asset-btn selected" data-asset="USDT" onclick="selectAsset(this)"><span class="asset-icon">₮</span>USDT</button>
+            <button class="asset-btn" data-asset="BTC" onclick="selectAsset(this)"><span class="asset-icon">₿</span>BTC</button>
+            <button class="asset-btn" data-asset="ETH" onclick="selectAsset(this)"><span class="asset-icon">Ξ</span>ETH</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Amount</label>
+          <div class="amount-wrap">
+            <span class="amount-prefix">#</span>
+            <input type="number" id="amount" placeholder="0.00" min="0" step="any" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn btn-add" id="submitBtn" onclick="handleSubmit()">
+          <span class="btn-text" id="btnText">ADD BALANCE</span>
+          <span class="spinner"></span>
+        </button>
+      </div>
+
+      <div class="log-section">
+        <div class="log-header">
+          <span class="log-title">// recent actions</span>
+          <button class="log-clear" onclick="clearLog()">clear</button>
+        </div>
+        <div class="log-list" id="logList">
+          <div class="log-empty" id="logEmpty">No actions yet</div>
+        </div>
+      </div>
+
     </div>
-
-    <div class="divider"></div>
-
-    <button class="btn btn-add" id="submitBtn" onclick="handleSubmit()">
-      <span class="btn-text" id="btnText">ADD BALANCE</span>
-      <span class="spinner"></span>
-    </button>
   </div>
 
-  <div class="log-section">
-    <div class="log-header">
-      <span class="log-title">// recent actions</span>
-      <button class="log-clear" onclick="clearLog()">clear</button>
-    </div>
-    <div class="log-list" id="logList">
-      <div class="log-empty" id="logEmpty">No actions yet</div>
-    </div>
+  <div class="toast" id="toast">
+    <span class="toast-dot"></span>
+    <span id="toastMsg"></span>
   </div>
 
-</div>
+  <script>
+    // Sidebar toggle + icon & position change
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sidebar   = document.getElementById('sidebar');
+    const overlay   = document.getElementById('overlay');
+    const icon      = hamburger?.querySelector('i');
 
-<!-- Toast -->
-<div class="toast" id="toast">
-  <span class="toast-dot"></span>
-  <span id="toastMsg"></span>
-</div>
-<script>
-    // Just initialize once DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-        renderLog();           // if you want initial empty log
-        // Optional: focus username field
-        document.getElementById('username')?.focus();
-    });
-</script>
+    function toggleSidebar() {
+      const isOpen = sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open', isOpen);
 
-<!-- <script>
-// ====================== BALANCE CONTROL - SAME AS USERS.JS ======================
-let currentTab = 'add';
-let selectedAsset = 'USDT';
-let actionLog = [];
-
-function switchTab(tab) {
-  currentTab = tab;
-  const card = document.getElementById('card');
-  const addBtn = document.querySelector('.tab-btn.add');
-  const subBtn = document.querySelector('.tab-btn.sub');
-  const submitBtn = document.getElementById('submitBtn');
-  const btnText = document.getElementById('btnText');
-
-  if (tab === 'add') {
-    addBtn.classList.add('active'); subBtn.classList.remove('active');
-    card.className = 'card add-mode';
-    submitBtn.className = 'btn btn-add';
-    btnText.textContent = 'ADD BALANCE';
-  } else {
-    subBtn.classList.add('active'); addBtn.classList.remove('active');
-    card.className = 'card sub-mode';
-    submitBtn.className = 'btn btn-sub';
-    btnText.textContent = 'SUBTRACT BALANCE';
-  }
-}
-
-function selectAsset(el) {
-  document.querySelectorAll('.asset-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedAsset = el.dataset.asset;
-}
-
-async function handleSubmit() {
-  const username = document.getElementById('username').value.trim();
-  const amount = document.getElementById('amount').value.trim();
-  const btn = document.getElementById('submitBtn');
-
-  if (!username) return showToast('Username is required', 'error');
-  if (!amount || parseFloat(amount) <= 0) return showToast('Enter a valid amount', 'error');
-
-  const isAdd = currentTab === 'add';
-  const endpoint = isAdd ? '/api/v1/admin/add-balance' : '/api/v1/admin/subtract-balance';
-  const actionWord = isAdd ? 'ADD' : 'SUBTRACT';
-
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("Please log in first");
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        username: username,
-        amount: parseFloat(amount),
-        asset: selectedAsset.toLowerCase()
-      })
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || "Request failed");
+      if (icon) {
+        icon.classList.toggle('fa-bars', !isOpen);
+        icon.classList.toggle('fa-xmark', isOpen);
+      }
     }
 
-    showToast(`${actionWord} successful!`, 'success');
-    addToLog(username, selectedAsset, parseFloat(amount), isAdd ? 'add' : 'sub');
-    document.getElementById('amount').value = '';
+    if (hamburger) hamburger.addEventListener('click', toggleSidebar);
+    if (overlay)   overlay.addEventListener('click', toggleSidebar);
 
-  } catch (err) {
-    showToast(err.message || 'Failed to update balance', 'error');
-  } finally {
-    btn.classList.remove('loading');
-    btn.disabled = false;
-  }
-}
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) toggleSidebar();
+      });
+    });
 
-// Log & Toast functions (your original beautiful ones)
-function addToLog(username, asset, amount, type) {
-  const entry = { username, asset, amount, type, time: new Date() };
-  actionLog.unshift(entry);
-  renderLog();
-}
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar();
+    });
+  </script>
 
-function renderLog() {
-  const list = document.getElementById('logList');
-  const empty = document.getElementById('logEmpty');
-  if (actionLog.length === 0) {
-    empty.style.display = 'block';
-    list.innerHTML = '';
-    return;
-  }
-  empty.style.display = 'none';
-  list.innerHTML = '';
-  actionLog.forEach(entry => {
-    const sign = entry.type === 'add' ? '+' : '-';
-    const cls = entry.type === 'add' ? 'add' : 'sub';
-    const time = entry.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const item = document.createElement('div');
-    item.className = 'log-item';
-    item.innerHTML = `
-      <div class="log-left">
-        <span class="log-user">@${entry.username}</span>
-        <span class="log-time">${time}</span>
-      </div>
-      <div class="log-right">
-        <span class="log-asset">${entry.asset}</span>
-        <span class="log-amount ${cls}">${sign}${entry.amount}</span>
-      </div>
-    `;
-    list.appendChild(item);
-  });
-}
-
-window.clearLog = function() {
-  actionLog = [];
-  renderLog();
-};
-
-let toastTimer;
-function showToast(msg, type = 'success') {
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toastMsg');
-  toast.className = `toast ${type}`;
-  toastMsg.textContent = msg;
-  void toast.offsetWidth;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
-}
-
-// Enter key
-document.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); });
-
-// Initial render
-renderLog();
-</script> -->
-<script src="../js/manipulation.js"></script>
+  <script src="../js/manipulation.js"></script>
 </body>
 </html>
