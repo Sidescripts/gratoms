@@ -129,37 +129,6 @@ function formatNumber(number) {
     return new Intl.NumberFormat('en-US').format(number);
 }
 
-// Initialize WebSocket connection
-// function initializeWebSocket() {
-//     try {
-//         ws = new WebSocket(WS_URL);
-
-//         ws.onopen = () => {
-//             console.log('WebSocket connected');
-//             ws.send(JSON.stringify({ type: 'subscribe', channel: 'dashboard' }));
-//         };
-
-//         ws.onmessage = (event) => {
-//             const data = JSON.parse(event.data);
-//             if (data.type === 'dashboardUpdate') {
-//                 fetchDashboardStats();
-//             }
-//         };
-
-//         ws.onclose = () => {
-//             console.log('WebSocket disconnected, attempting to reconnect...');
-//             setTimeout(initializeWebSocket, 5000);
-//         };
-
-//         ws.onerror = (error) => {
-//             console.error('WebSocket error:', error);
-//         };
-//     } catch (error) {
-//         console.error('Failed to initialize WebSocket:', error);
-//     }
-// }
-
-// Fetch dashboard stats from API (adapted from original, now real)
 async function fetchDashboardStats() {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
