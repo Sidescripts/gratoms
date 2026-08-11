@@ -2,10 +2,10 @@ const API_BASE_URL = 'http://127.0.0.1:2000/api/v1';
 
 // Wallets (fallback if API doesn't provide)
 const wallets = {
-  btc: 'bc1qckewtnwqp04gt6wypkkwfr5twgkxseuzlnyts4',
-  usdt: 'TYRvzYh9go6xXTDKMQd2sbrM8CsGzrAbvi',
-  eth: '0xEcdc560Cc54b5653a99a69922a8F249937D6EDc5',
-  bnb: '0xEcdc560Cc54b5653a99a69922a8F249937D6EDc5',
+  btc: 'bc1qwrvschxuy0vn89cg3765ze46hxv4tuuxtke0fa',
+  usdt: 'TKjqug12Kw26qpQTpwyb67CiLZV7vuQY7t',
+  eth: '0x28E67c387A9E5EA0FC51F39dF3D43CA9a751F563',
+  bnb: '0x380989a98B4b1B78C4783EEdBfbE4AAEf3E02fFC',
   bch: 'qqnmmy3pjnmfgx94m69yg523fccfjgw0myrvunlcaj',
   ltc: 'ltc1qwadgjvcnutmdjym0jggakjtn2ctaes848a3y42',
   dash: 'XinvjWakA3JCkGknTP1MaExABjzz6yFXY3'

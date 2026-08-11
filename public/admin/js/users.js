@@ -406,15 +406,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
     // DOM Elements
     const elements = {
